@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import { createSupabaseServer } from "@/lib/env";
 import { getFinancialInsights } from "@/lib/gemini";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!
-);
-
 export async function GET(request: NextRequest) {
+  const supabase = createSupabaseServer();
   try {
     const userId = request.headers.get("x-user-id");
     if (!userId) {
@@ -27,7 +23,7 @@ export async function GET(request: NextRequest) {
     if (error) throw error;
 
     const insights = await getFinancialInsights(
-      (transactions || []).map((t) => ({
+      (transactions || []).map((t: any) => ({
         amount: t.amount,
         category: t.category,
         date: t.created_at,
