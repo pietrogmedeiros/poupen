@@ -13,7 +13,6 @@ import {
   Camera,
   Settings,
   LogOut,
-  Pen,
   Repeat2,
   Brain
 } from 'lucide-react';
@@ -63,9 +62,9 @@ export function MobileNav() {
         </button>
         
         <div className="flex-1 flex items-center justify-center">
-          <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-gray-700 to-gray-800 rounded-lg text-white font-bold text-sm">
-            <Pen size={16} />
-          </div>
+          <Link href="/" className="flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden border border-gray-600">
+            <img src="/logo.png" alt="Poupen Logo" className="w-full h-full object-cover" />
+          </Link>
         </div>
 
         <div className="w-10" />

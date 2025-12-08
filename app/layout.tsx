@@ -21,6 +21,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Poupen - Controle de Finanças",
   description: "Aplicação completa de controle de finanças pessoais",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default function RootLayout({
