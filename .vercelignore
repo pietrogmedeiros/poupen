@@ -1,0 +1,4 @@
+server/
+scripts/
+dist/
+*.ts.bak
