@@ -58,7 +58,7 @@ export default function ComprovantePage() {
 
     setProcessing(true);
     try {
-      const response = await fetch('http://localhost:3001/api/process-receipt', {
+      const response = await fetch('/api/process-receipt', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
