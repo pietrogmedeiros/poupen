@@ -62,7 +62,7 @@ export function MobileNav() {
         </button>
         
         <div className="flex-1 flex items-center justify-center">
-          <Link href="/" className="flex items-center justify-center w-8 h-8 rounded-lg overflow-hidden border border-gray-600">
+          <Link href="/" className="flex items-center justify-center w-14 h-14 rounded-lg overflow-hidden">
             <img src="/logo.png" alt="Poupen Logo" className="w-full h-full object-cover" />
           </Link>
         </div>

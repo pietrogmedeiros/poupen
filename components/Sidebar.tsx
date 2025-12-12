@@ -51,7 +51,7 @@ export function Sidebar() {
   return (
     <aside className="hidden md:fixed md:left-0 md:top-0 md:h-screen md:w-20 md:bg-gradient-to-b md:from-gray-900 md:via-gray-900 md:to-gray-800 md:border-r md:border-gray-700 md:flex md:flex-col md:items-center md:py-8 md:space-y-8">
       {/* Logo */}
-      <Link href="/" className="flex items-center justify-center w-12 h-12 rounded-xl overflow-hidden shadow-lg border border-gray-600 hover:border-gray-500 transition-all duration-300 hover:scale-110">
+      <Link href="/" className="flex items-center justify-center w-16 h-16 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-105">
         <img src="/logo.png" alt="Poupen Logo" className="w-full h-full object-cover" />
       </Link>
 
