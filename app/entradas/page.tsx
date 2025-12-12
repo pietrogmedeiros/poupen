@@ -5,10 +5,14 @@ import { Plus, X, Loader2, Trash2 } from 'lucide-react';
 import { fetchTransactions, createTransaction, deleteTransaction, createRecurringTransaction } from '@/lib/supabase-queries';
 import { useAuth } from '@/lib/auth-context';
 import { formatNumber } from '@/lib/format';
+import { useValueVisibility } from '@/lib/ValueVisibilityContext';
+import { MaskedValue } from '@/components/MaskedValue';
+import { gradients } from '@/lib/colorMap';
 import CategoryInput from '@/components/CategoryInput';
 
 export default function EntradasPage() {
   const { user, loading: authLoading } = useAuth();
+  const { isValuesVisible } = useValueVisibility();
   const [entradas, setEntradas] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -113,16 +117,19 @@ export default function EntradasPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+          <h1 
+            className="text-5xl font-bold text-transparent bg-clip-text"
+            style={{ backgroundImage: gradients.slate }}
+          >
             Entradas
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-slate-400 mt-3 text-lg">
             Gerencie suas receitas
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center justify-center md:justify-start gap-2 bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-300 font-medium w-full md:w-auto"
+          className="flex items-center justify-center md:justify-start gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-semibold w-full md:w-auto"
         >
           <Plus className="w-5 h-5" />
           Nova Entrada
@@ -130,32 +137,36 @@ export default function EntradasPage() {
       </div>
 
       {/* Lista de Entradas */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-700/30 p-8 shadow-2xl hover:border-slate-700/50 transition-all">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+            <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
           </div>
         ) : entradas.length > 0 ? (
           <div className="space-y-3">
             {entradas.map((entrada) => (
-              <div key={entrada.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
+              <div key={entrada.id} className="flex items-center justify-between p-4 bg-slate-800/30 rounded-xl hover:bg-slate-800/60 transition-all border border-slate-700/30 hover:border-slate-700/60 group">
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white">{entrada.description}</p>
+                  <p className="font-semibold text-white group-hover:text-green-100 transition-colors">{entrada.description}</p>
                   <div className="flex items-center gap-3 mt-1">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{entrada.category}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">
+                    <p className="text-sm text-slate-400">{entrada.category}</p>
+                    <p className="text-xs text-slate-500">
                       {new Date(entrada.date).toLocaleDateString('pt-BR')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <p className="text-lg font-semibold text-green-600 dark:text-green-400">
-                    +R$ {formatNumber(parseFloat(entrada.amount))}
-                  </p>
+                  <div className="text-lg font-bold text-green-400 flex items-center gap-2">
+                    <MaskedValue
+                      value={`+R$ ${formatNumber(parseFloat(entrada.amount))}`}
+                      isVisible={isValuesVisible}
+                      onToggle={() => {}}
+                    />
+                  </div>
                   <button
                     onClick={() => handleDelete(entrada.id)}
                     disabled={deleting === entrada.id}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg disabled:opacity-50"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-red-400 hover:bg-red-500/10 rounded-lg disabled:opacity-50"
                   >
                     {deleting === entrada.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />

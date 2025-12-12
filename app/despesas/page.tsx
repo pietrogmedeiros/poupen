@@ -5,10 +5,14 @@ import { Plus, X, Loader2, Trash2 } from 'lucide-react';
 import { fetchTransactions, createTransaction, deleteTransaction, createRecurringTransaction } from '@/lib/supabase-queries';
 import { useAuth } from '@/lib/auth-context';
 import { formatNumber } from '@/lib/format';
+import { useValueVisibility } from '@/lib/ValueVisibilityContext';
+import { MaskedValue } from '@/components/MaskedValue';
+import { gradients } from '@/lib/colorMap';
 import CategoryInput from '@/components/CategoryInput';
 
 export default function DespesasPage() {
   const { user, loading: authLoading } = useAuth();
+  const { isValuesVisible } = useValueVisibility();
   const [despesas, setDespesas] = useState<any[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -113,16 +117,19 @@ export default function DespesasPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+          <h1 
+            className="text-5xl font-bold text-transparent bg-clip-text"
+            style={{ backgroundImage: gradients.slate }}
+          >
             Despesas
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-slate-400 mt-3 text-lg">
             Controle seus gastos mensais
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center justify-center md:justify-start gap-2 bg-gray-700 hover:bg-gray-800 text-white px-6 py-3 rounded-xl shadow-lg transition-all duration-300 font-medium w-full md:w-auto"
+          className="flex items-center justify-center md:justify-start gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-semibold w-full md:w-auto"
         >
           <Plus className="w-5 h-5" />
           Nova Despesa
@@ -130,32 +137,36 @@ export default function DespesasPage() {
       </div>
 
       {/* Lista de Despesas */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-md border border-gray-200 dark:border-gray-700 p-6">
+      <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-700/30 p-8 shadow-2xl hover:border-slate-700/50 transition-all">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+            <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
           </div>
         ) : despesas.length > 0 ? (
           <div className="space-y-3">
             {despesas.map((despesa) => (
-              <div key={despesa.id} className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors group">
+              <div key={despesa.id} className="flex items-center justify-between p-4 bg-slate-800/30 rounded-xl hover:bg-slate-800/60 transition-all border border-slate-700/30 hover:border-slate-700/60 group">
                 <div className="flex-1">
-                  <p className="font-medium text-gray-900 dark:text-white">{despesa.description}</p>
+                  <p className="font-semibold text-white group-hover:text-red-100 transition-colors">{despesa.description}</p>
                   <div className="flex items-center gap-3 mt-1">
-                    <p className="text-sm text-gray-600 dark:text-gray-400">{despesa.category}</p>
-                    <p className="text-xs text-gray-500 dark:text-gray-500">
+                    <p className="text-sm text-slate-400">{despesa.category}</p>
+                    <p className="text-xs text-slate-500">
                       {new Date(despesa.date).toLocaleDateString('pt-BR')}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <p className="text-lg font-semibold text-red-600 dark:text-red-400">
-                    -R$ {formatNumber(parseFloat(despesa.amount))}
-                  </p>
+                  <div className="text-lg font-bold text-red-400 flex items-center gap-2">
+                    <MaskedValue
+                      value={`-R$ ${formatNumber(parseFloat(despesa.amount))}`}
+                      isVisible={isValuesVisible}
+                      onToggle={() => {}}
+                    />
+                  </div>
                   <button
                     onClick={() => handleDelete(despesa.id)}
                     disabled={deleting === despesa.id}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg disabled:opacity-50"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-red-400 hover:bg-red-500/10 rounded-lg disabled:opacity-50"
                   >
                     {deleting === despesa.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -168,11 +179,11 @@ export default function DespesasPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
+          <div className="flex flex-col items-center justify-center py-12 text-slate-500">
             <svg className="w-16 h-16 opacity-50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m0 0h6m-6-6H6m0 0H0" />
             </svg>
-            <p>Nenhuma despesa registrada ainda</p>
+            <p className="text-slate-400">Nenhuma despesa registrada ainda</p>
           </div>
         )}
       </div>

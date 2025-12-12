@@ -5,6 +5,7 @@ import { Sidebar } from "@/components/Sidebar";
 import { MobileNav } from "@/components/MobileNav";
 import { AuthProvider } from "@/lib/auth-context";
 import { NotificationHandler } from "@/components/NotificationHandler";
+import { ValueVisibilityProvider } from "@/lib/ValueVisibilityContext";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -32,22 +33,24 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white dark:bg-gray-950`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 dark:bg-slate-950`}
       >
         <AuthProvider>
-          <NotificationHandler>
-            <MobileNav />
-            <div className="flex min-h-screen bg-white dark:bg-gray-950 flex-col md:flex-row">
-              <Sidebar />
-              <main className="flex-1 md:ml-20 mt-16 md:mt-0">
-                <div className="min-h-screen p-4 md:p-8 bg-white dark:bg-gray-950">
-                  <div className="max-w-7xl mx-auto">
-                    {children}
+          <ValueVisibilityProvider>
+            <NotificationHandler>
+              <MobileNav />
+              <div className="flex min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex-col md:flex-row">
+                <Sidebar />
+                <main className="flex-1 md:ml-20 mt-16 md:mt-0">
+                  <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-slate-950 via-slate-900/50 to-slate-950">
+                    <div className="max-w-7xl mx-auto">
+                      {children}
+                    </div>
                   </div>
-                </div>
-              </main>
-            </div>
-          </NotificationHandler>
+                </main>
+              </div>
+            </NotificationHandler>
+          </ValueVisibilityProvider>
         </AuthProvider>
       </body>
     </html>

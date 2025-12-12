@@ -5,6 +5,7 @@ import { User, Mail, Lock, LogOut, Camera, Save, X, Loader2 } from 'lucide-react
 import { supabase } from '@/lib/supabase';
 import { fetchUserProfile, updateUserProfile } from '@/lib/supabase-queries';
 import { useAuth } from '@/lib/auth-context';
+import { gradients } from '@/lib/colorMap';
 import { useRouter } from 'next/navigation';
 
 export default function ConfiguracoesPage() {
@@ -195,10 +196,13 @@ export default function ConfiguracoesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
+        <h1 
+          className="text-5xl font-bold text-transparent bg-clip-text"
+          style={{ backgroundImage: gradients.slate }}
+        >
           Configurações
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">
+        <p className="text-slate-400 mt-3 text-lg">
           Gerencie sua conta e preferências
         </p>
       </div>

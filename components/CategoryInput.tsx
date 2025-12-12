@@ -10,6 +10,7 @@ interface CategoryInputProps {
   userId: string;
   type: 'income' | 'expense';
   required?: boolean;
+  variant?: 'light' | 'dark';
 }
 
 export default function CategoryInput({
@@ -18,6 +19,7 @@ export default function CategoryInput({
   userId,
   type,
   required = false,
+  variant = 'light',
 }: CategoryInputProps) {
   const [categories, setCategories] = useState<any[]>([]);
   const [showDropdown, setShowDropdown] = useState(false);
@@ -92,7 +94,11 @@ export default function CategoryInput({
 
   return (
     <div className="relative w-full">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+      <label className={`block text-sm font-medium mb-2 ${
+        variant === 'dark' 
+          ? 'text-slate-300' 
+          : 'text-gray-700 dark:text-gray-300'
+      }`}>
         Categoria
       </label>
       
@@ -103,7 +109,11 @@ export default function CategoryInput({
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => setShowDropdown(true)}
           placeholder="Buscar ou criar categoria..."
-          className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-gray-500 focus:border-transparent pr-10"
+          className={`w-full px-4 py-2 border rounded-lg focus:ring-2 focus:border-transparent ${
+            variant === 'dark'
+              ? 'border-slate-600 bg-slate-900 text-white focus:ring-blue-500'
+              : 'border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-gray-500'
+          } pr-10`}
         />
         <ChevronDown className="absolute right-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
       </div>

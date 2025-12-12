@@ -3,6 +3,9 @@
 import { useState, useEffect } from 'react';
 import { Plus, Edit2, Trash2, Calendar, DollarSign, Loader2 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
+import { useValueVisibility } from '@/lib/ValueVisibilityContext';
+import { MaskedValue } from '@/components/MaskedValue';
+import { gradients } from '@/lib/colorMap';
 import { 
   fetchRecurringTransactions, 
   createRecurringTransaction,
@@ -24,6 +27,7 @@ interface RecurringTransaction {
 
 export default function RecorridosPage() {
   const { user, loading: authLoading } = useAuth();
+  const { isValuesVisible } = useValueVisibility();
   const [recorrencias, setRecorrencias] = useState<RecurringTransaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [showForm, setShowForm] = useState(false);
@@ -161,10 +165,13 @@ export default function RecorridosPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-            Transações Recorrentes
+          <h1 
+            className="text-5xl font-bold text-transparent bg-clip-text"
+            style={{ backgroundImage: gradients.slate }}
+          >
+            Recorridos
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">
+          <p className="text-slate-400 mt-3 text-lg">
             Gerencie suas despesas e receitas recorrentes
           </p>
         </div>
@@ -185,7 +192,7 @@ export default function RecorridosPage() {
               });
             }
           }}
-          className="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors"
+          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
         >
           <Plus size={20} />
           Nova Recorrência
@@ -378,13 +385,17 @@ export default function RecorridosPage() {
 
                 <div className="flex items-center gap-6 text-right">
                   <div>
-                    <p className={`font-semibold ${
+                    <div className={`font-semibold flex items-center justify-end gap-2 ${
                       recorrencia.type === 'income'
                         ? 'text-green-600 dark:text-green-400'
                         : 'text-red-600 dark:text-red-400'
                     }`}>
-                      {recorrencia.type === 'income' ? '+' : '-'} R$ {formatNumber(recorrencia.amount)}
-                    </p>
+                      <MaskedValue
+                        value={`${recorrencia.type === 'income' ? '+' : '-'} R$ ${formatNumber(recorrencia.amount)}`}
+                        isVisible={isValuesVisible}
+                        onToggle={() => {}}
+                      />
+                    </div>
                     <p className="text-xs text-gray-500 dark:text-gray-400">
                       <Calendar className="w-3 h-3 inline mr-1" />
                       {new Date(recorrencia.next_occurrence).toLocaleDateString('pt-BR')}

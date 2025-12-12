@@ -5,6 +5,8 @@ import { Bell, Check, Trash2, Loader2 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { fetchNotifications, markNotificationAsRead } from '@/lib/supabase-queries';
 import { useNotifications } from '@/lib/useNotifications';
+import { useValueVisibility } from '@/lib/ValueVisibilityContext';
+import { MaskedValue } from '@/components/MaskedValue';
 
 interface Notification {
   id: string;
@@ -25,6 +27,7 @@ const typeStyles = {
 
 export default function NotificacoesPage() {
   const { user, loading: authLoading } = useAuth();
+  const { isValuesVisible } = useValueVisibility();
   const { notifications, unreadCount } = useNotifications(user?.id);
   const [marking, setMarking] = useState<string | null>(null);
   const [filter, setFilter] = useState<'all' | 'unread'>('all');
@@ -64,11 +67,13 @@ export default function NotificacoesPage() {
     <div className="space-y-8">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-4xl font-bold text-gray-900 dark:text-white flex items-center gap-3">
-            <Bell className="w-10 h-10" />
+          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 flex items-center gap-3">
+            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+              <Bell className="w-6 h-6 text-white" />
+            </div>
             Notificações
           </h1>
-          <p className="text-gray-500 dark:text-gray-400 mt-2">
+          <p className="text-slate-400 mt-3 text-lg">
             {unreadCount > 0 ? `Você tem ${unreadCount} notificação${unreadCount !== 1 ? 's' : ''} não lida${unreadCount !== 1 ? 's' : ''}` : 'Você está atualizado!'}
           </p>
         </div>
@@ -78,20 +83,20 @@ export default function NotificacoesPage() {
       <div className="flex gap-3">
         <button
           onClick={() => setFilter('all')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-4 py-2.5 rounded-lg font-medium transition-all ${
             filter === 'all'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
+              : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80'
           }`}
         >
           Todas ({notifications.length})
         </button>
         <button
           onClick={() => setFilter('unread')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+          className={`px-4 py-2.5 rounded-lg font-medium transition-all ${
             filter === 'unread'
-              ? 'bg-blue-600 text-white'
-              : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-600'
+              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
+              : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80'
           }`}
         >
           Não lidas ({unreadCount})
@@ -101,9 +106,9 @@ export default function NotificacoesPage() {
       {/* Lista de Notificações */}
       <div className="space-y-3">
         {notifications.length === 0 ? (
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-12 text-center border border-gray-200 dark:border-gray-700">
-            <Bell className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-600 dark:text-gray-400">
+          <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-12 text-center border border-slate-700/30">
+            <Bell className="w-12 h-12 text-slate-600 mx-auto mb-4" />
+            <p className="text-slate-400">
               {filter === 'unread' ? 'Sem notificações não lidas' : 'Sem notificações'}
             </p>
           </div>
@@ -113,36 +118,44 @@ export default function NotificacoesPage() {
             return (
               <div
                 key={notification.id}
-                className={`${style.bg} rounded-2xl p-4 border border-gray-200 dark:border-gray-700 transition-all ${
-                  !notification.read ? 'ring-2 ring-blue-500 dark:ring-blue-400' : ''
-                }`}
+                className={`bg-slate-800/30 rounded-2xl p-4 border transition-all ${
+                  !notification.read ? 'border-blue-500/50 shadow-lg shadow-blue-500/10' : 'border-slate-700/30 hover:border-slate-700/50'
+                } backdrop-blur-sm hover:bg-slate-800/60`}
               >
                 <div className="flex items-start gap-4">
-                  <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${style.bg}`}>
-                    <Bell className={`w-5 h-5 ${style.icon}`} />
+                  <div className={`flex-shrink-0 w-10 h-10 rounded-lg flex items-center justify-center ${
+                    notification.type === 'reminder' ? 'bg-blue-500/20 text-blue-400' :
+                    notification.type === 'created' ? 'bg-green-500/20 text-green-400' :
+                    'bg-red-500/20 text-red-400'
+                  }`}>
+                    <Bell className="w-5 h-5" />
                   </div>
 
                   <div className="flex-1 min-w-0">
                     <div className="flex items-start justify-between gap-4">
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-900 dark:text-white">
+                        <h3 className="font-semibold text-white">
                           {notification.title}
                         </h3>
                         {notification.message && (
-                          <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
+                          <p className="text-sm text-slate-400 mt-1">
                             {notification.message}
                           </p>
                         )}
                         <div className="flex items-center gap-3 mt-2">
-                          <span className={`text-xs font-medium px-2 py-1 rounded`}>
+                          <span className={`text-xs font-medium px-2 py-1 rounded ${
+                            notification.type === 'reminder' ? 'bg-blue-500/20 text-blue-400' :
+                            notification.type === 'created' ? 'bg-green-500/20 text-green-400' :
+                            'bg-red-500/20 text-red-400'
+                          }`}>
                             {style.label}
                           </span>
                           {notification.daysRemaining !== undefined && notification.type === 'reminder' && (
-                            <span className="text-xs font-bold px-2 py-1 rounded bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400">
+                            <span className="text-xs font-bold px-2 py-1 rounded bg-yellow-500/20 text-yellow-400">
                               {notification.daysRemaining} dia{notification.daysRemaining !== 1 ? 's' : ''} restante{notification.daysRemaining !== 1 ? 's' : ''}
                             </span>
                           )}
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
+                          <span className="text-xs text-slate-500">
                             {new Date(notification.created_at).toLocaleDateString('pt-BR', {
                               day: 'numeric',
                               month: 'short',

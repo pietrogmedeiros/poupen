@@ -17,9 +17,13 @@ import { TrendingUp, TrendingDown, ArrowUpRight, ArrowDownLeft, Loader2 } from '
 import { fetchTransactions } from '@/lib/supabase-queries';
 import { useAuth } from '@/lib/auth-context';
 import { formatNumber } from '@/lib/format';
+import { useValueVisibility } from '@/lib/ValueVisibilityContext';
+import { MaskedValue } from '@/components/MaskedValue';
+import { gradients } from '@/lib/colorMap';
 
 export default function HistoricoPage() {
   const { user, loading: authLoading } = useAuth();
+  const { isValuesVisible } = useValueVisibility();
   const [periodo, setPeriodo] = useState('mes');
   const [transactions, setTransactions] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -143,31 +147,34 @@ export default function HistoricoPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white">
+          <h1 
+            className="text-5xl font-bold text-transparent bg-clip-text"
+            style={{ backgroundImage: gradients.slate }}
+          >
             Histórico
           </h1>
-          <p className="text-gray-600 dark:text-gray-400 mt-2">
+          <p className="text-slate-400 mt-3 text-lg">
             Análise detalhada das suas finanças
           </p>
         </div>
         
-        <div className="flex gap-2">
+        <div className="flex gap-3">
           <button
             onClick={() => setPeriodo('mes')}
-            className={`px-6 py-2 rounded-lg transition-all duration-300 font-semibold text-sm ${
+            className={`px-6 py-2.5 rounded-lg transition-all duration-300 font-semibold text-sm ${
               periodo === 'mes'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
-                : 'bg-gray-700 dark:bg-gray-700 text-gray-300 hover:bg-gray-600 dark:hover:bg-gray-600'
+                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/50'
+                : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80 hover:border-slate-600/50'
             }`}
           >
             Mês
           </button>
           <button
             onClick={() => setPeriodo('ano')}
-            className={`px-6 py-2 rounded-lg transition-all duration-300 font-semibold text-sm ${
+            className={`px-6 py-2.5 rounded-lg transition-all duration-300 font-semibold text-sm ${
               periodo === 'ano'
-                ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
-                : 'bg-gray-700 dark:bg-gray-700 text-gray-300 hover:bg-gray-600 dark:hover:bg-gray-600'
+                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/50'
+                : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80 hover:border-slate-600/50'
             }`}
           >
             Ano
@@ -176,14 +183,16 @@ export default function HistoricoPage() {
       </div>
 
       {/* Gráfico de Area - Ranking de Maiores Gastos */}
-      <div className="bg-gradient-to-br from-gray-800 via-gray-800 to-gray-900 dark:from-gray-900 dark:via-gray-900 dark:to-gray-950 rounded-3xl p-8 shadow-2xl border border-gray-700 dark:border-gray-700 backdrop-blur-sm mb-12">
-        <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-2">
-          <TrendingUp className="w-6 h-6 text-blue-400" />
+      <div className="bg-gradient-to-br from-slate-800/40 to-slate-900/40 rounded-3xl p-8 shadow-2xl border border-slate-700/30 backdrop-blur-xl hover:border-slate-700/50 transition-all">
+        <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+          <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
+            <TrendingUp className="w-5 h-5 text-white" />
+          </div>
           Ranking de Maiores Gastos
         </h2>
         {loading ? (
           <div className="flex items-center justify-center h-96">
-            <Loader2 className="w-6 h-6 animate-spin text-gray-400" />
+            <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
           </div>
         ) : dadosRanking.length > 0 ? (
           <ResponsiveContainer width="100%" height={450}>
@@ -372,13 +381,17 @@ export default function HistoricoPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`font-bold text-lg transition-all duration-300 ${
+                  <div className={`font-bold text-lg transition-all duration-300 flex items-center justify-end gap-2 ${
                     transacao.type === 'income'
                       ? 'text-emerald-400'
                       : 'text-red-400'
                   }`}>
-                    {transacao.type === 'income' ? '+' : '-'} R$ {formatNumber(parseFloat(transacao.amount))}
-                  </p>
+                    <MaskedValue
+                      value={`${transacao.type === 'income' ? '+' : '-'} R$ ${formatNumber(parseFloat(transacao.amount))}`}
+                      isVisible={isValuesVisible}
+                      onToggle={() => {}}
+                    />
+                  </div>
                 </div>
               </div>
             ))}

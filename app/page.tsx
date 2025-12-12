@@ -3,14 +3,22 @@
 import { TrendingUp, TrendingDown, DollarSign, ArrowUpRight, ArrowDownLeft, Loader2 } from 'lucide-react';
 import { fetchTransactions, calculateMonthlyStats } from '@/lib/supabase-queries';
 import { useAuth } from '@/lib/auth-context';
-import { useEffect, useState } from 'react';
+import { useValueVisibility } from '@/lib/ValueVisibilityContext';
+import { MaskedValue } from '@/components/MaskedValue';
+import { ValueVisibilityToggle } from '@/components/ValueVisibilityToggle';
+import { gradients } from '@/lib/colorMap';
+import { useEffect, useState, useCallback } from 'react';
 import { formatNumber } from '@/lib/format';
 
 export default function Home() {
   const { user, loading: authLoading } = useAuth();
+  const { isValuesVisible } = useValueVisibility();
   const [transactions, setTransactions] = useState<any[]>([]);
   const [stats, setStats] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [showBalance, setShowBalance] = useState(true);
+  const [showIncome, setShowIncome] = useState(true);
+  const [showExpense, setShowExpense] = useState(true);
 
   useEffect(() => {
     if (authLoading || !user) return;
@@ -73,71 +81,101 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
-      <div>
-        <h1 className="text-4xl font-bold text-gray-900 dark:text-white">
-          Dashboard
-        </h1>
-        <p className="text-gray-500 dark:text-gray-400 capitalize mt-2">
-          {mesAtual}
-        </p>
+      <div className="animate-fadeInUp flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h1 
+            className="text-5xl font-bold text-transparent bg-clip-text"
+            style={{ backgroundImage: gradients.slate }}
+          >
+            Dashboard
+          </h1>
+          <p className="text-slate-400 capitalize mt-2 text-lg">
+            {mesAtual}
+          </p>
+        </div>
+        <ValueVisibilityToggle />
       </div>
 
       {/* Cards de resumo */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 animate-fadeInUp">
         {/* Saldo Total */}
-        <div className="col-span-1 bg-gradient-to-br from-gray-700 to-gray-800 rounded-2xl p-6 text-white shadow-lg border border-gray-600">
+        <div className="col-span-1 bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-800 rounded-2xl p-8 text-white shadow-2xl border border-blue-500/30 backdrop-blur-xl hover:shadow-3xl transition-all duration-300 group">
           <div className="flex items-start justify-between">
-            <div>
-              <p className="text-gray-300 text-sm font-medium">Saldo Total</p>
-              <p className="text-3xl font-bold mt-2">
-                R$ {formatNumber(displayStats.balance)}
-              </p>
+            <div className="flex-1">
+              <p className="text-blue-100 text-sm font-medium tracking-wide">Saldo Total</p>
+              <div className="mt-3">
+                <MaskedValue 
+                  value={`R$ ${formatNumber(displayStats.balance)}`}
+                  isVisible={isValuesVisible}
+                  onToggle={() => setShowBalance(!showBalance)}
+                  className="text-5xl font-bold group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
             </div>
-            <div className="w-12 h-12 bg-white/10 rounded-xl flex items-center justify-center">
-              <DollarSign className="w-6 h-6" />
+            <div className="w-14 h-14 bg-white/10 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-white/20 transition-colors">
+              <DollarSign className="w-7 h-7 text-blue-100" />
             </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-blue-400/20">
+            <p className="text-blue-100 text-xs">Patrimônio total</p>
           </div>
         </div>
 
         {/* Total Entradas */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+        <div className="bg-gradient-to-br from-emerald-500/10 to-green-600/10 rounded-2xl p-8 border border-emerald-500/30 shadow-xl hover:shadow-2xl transition-all duration-300 group backdrop-blur-xl">
           <div className="flex items-start justify-between">
-            <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Entradas</p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
-                R$ {formatNumber(displayStats.totalIncome)}
-              </p>
+            <div className="flex-1">
+              <p className="text-emerald-300 text-sm font-medium tracking-wide">Entradas</p>
+              <div className="mt-3">
+                <MaskedValue 
+                  value={`R$ ${formatNumber(displayStats.totalIncome)}`}
+                  isVisible={isValuesVisible}
+                  onToggle={() => setShowIncome(!showIncome)}
+                  className="text-4xl font-bold text-emerald-400 group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
             </div>
-            <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-green-600 dark:text-green-400" />
+            <div className="w-14 h-14 bg-emerald-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-emerald-500/30 transition-colors">
+              <TrendingUp className="w-7 h-7 text-emerald-400" />
             </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-emerald-500/20">
+            <p className="text-emerald-300 text-xs">Receitas deste mês</p>
           </div>
         </div>
 
         {/* Total Despesas */}
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 hover:shadow-lg transition-shadow duration-300">
+        <div className="bg-gradient-to-br from-red-500/10 to-orange-600/10 rounded-2xl p-8 border border-red-500/30 shadow-xl hover:shadow-2xl transition-all duration-300 group backdrop-blur-xl">
           <div className="flex items-start justify-between">
-            <div>
-              <p className="text-gray-600 dark:text-gray-400 text-sm font-medium">Despesas</p>
-              <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2">
-                R$ {formatNumber(displayStats.totalExpense)}
-              </p>
+            <div className="flex-1">
+              <p className="text-red-300 text-sm font-medium tracking-wide">Despesas</p>
+              <div className="mt-3">
+                <MaskedValue 
+                  value={`R$ ${formatNumber(displayStats.totalExpense)}`}
+                  isVisible={isValuesVisible}
+                  onToggle={() => setShowExpense(!showExpense)}
+                  className="text-4xl font-bold text-red-400 group-hover:scale-105 transition-transform duration-300"
+                />
+              </div>
             </div>
-            <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center">
-              <TrendingDown className="w-6 h-6 text-red-600 dark:text-red-400" />
+            <div className="w-14 h-14 bg-red-500/20 backdrop-blur-sm rounded-2xl flex items-center justify-center group-hover:bg-red-500/30 transition-colors">
+              <TrendingDown className="w-7 h-7 text-red-400" />
             </div>
+          </div>
+          <div className="mt-4 pt-4 border-t border-red-500/20">
+            <p className="text-red-300 text-xs">Gastos deste mês</p>
           </div>
         </div>
       </div>
 
       {/* Transações Recentes */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+      <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-8 border border-slate-700/30 shadow-2xl animate-fadeInUp hover:border-slate-700/50 transition-all duration-300">
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-2xl font-bold text-white">
             Transações Recentes
           </h2>
-          <a href="/historico" className="text-blue-600 dark:text-blue-400 text-sm font-medium hover:underline">
-            Ver todas
+          <a href="/historico" className="text-indigo-400 font-medium hover:text-indigo-300 transition-colors text-sm bg-indigo-500/10 px-4 py-2 rounded-lg hover:bg-indigo-500/20">
+            Ver todas →
           </a>
         </div>
         
@@ -146,47 +184,56 @@ export default function Home() {
             transacoesRecentes.map((transacao) => (
               <div 
                 key={transacao.id}
-                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors duration-200"
+                className="flex items-center justify-between p-4 bg-slate-800/30 rounded-xl hover:bg-slate-800/60 transition-all duration-200 border border-slate-700/30 hover:border-slate-700/60 group"
               >
                 <div className="flex items-center gap-4">
-                  <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
+                  <div className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all duration-300 ${
                     transacao.type === 'income'
-                      ? 'bg-green-100 dark:bg-green-900/30'
-                      : 'bg-red-100 dark:bg-red-900/30'
+                      ? 'bg-emerald-500/20 group-hover:bg-emerald-500/30'
+                      : 'bg-red-500/20 group-hover:bg-red-500/30'
                   }`}>
                     {transacao.type === 'income' ? (
-                      <ArrowDownLeft className="w-5 h-5 text-green-600 dark:text-green-400" />
+                      <ArrowDownLeft className="w-5 h-5 text-emerald-400" />
                     ) : (
-                      <ArrowUpRight className="w-5 h-5 text-red-600 dark:text-red-400" />
+                      <ArrowUpRight className="w-5 h-5 text-red-400" />
                     )}
                   </div>
                   <div>
-                    <p className="font-medium text-gray-900 dark:text-white">
+                    <p className="font-semibold text-white group-hover:text-indigo-100 transition-colors">
                       {transacao.description}
                     </p>
-                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                    <p className="text-sm text-slate-400">
                       {transacao.category}
                     </p>
                   </div>
                 </div>
                 <div className="text-right">
-                  <p className={`font-semibold ${
+                  <div className={`font-bold text-lg ${
                     transacao.type === 'income'
-                      ? 'text-green-600 dark:text-green-400'
-                      : 'text-red-600 dark:text-red-400'
+                      ? 'text-emerald-400'
+                      : 'text-red-400'
                   }`}>
-                    {transacao.type === 'income' ? '+' : '-'} R$ {formatNumber(transacao.amount)}
-                  </p>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">
+                    <MaskedValue 
+                      value={`${transacao.type === 'income' ? '+' : '-'} R$ ${formatNumber(transacao.amount)}`}
+                      isVisible={isValuesVisible}
+                      onToggle={() => {}}
+                    />
+                  </div>
+                  <p className="text-xs text-slate-500">
                     {new Date(transacao.date).toLocaleDateString('pt-BR')}
                   </p>
                 </div>
               </div>
             ))
           ) : (
-            <p className="text-gray-600 dark:text-gray-400 text-center py-8">
-              Nenhuma transação registrada ainda
-            </p>
+            <div className="text-center py-12">
+              <p className="text-slate-400 text-lg">
+                Nenhuma transação registrada ainda
+              </p>
+              <p className="text-slate-500 text-sm mt-2">
+                Comece a adicionar transações para ver o resumo
+              </p>
+            </div>
           )}
         </div>
       </div>

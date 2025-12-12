@@ -1,6 +1,6 @@
-import express from 'express';
-import cors from 'cors';
-import Tesseract from 'tesseract.js';
+const express = require('express');
+const cors = require('cors');
+const Tesseract = require('tesseract.js');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -9,7 +9,7 @@ app.use(cors());
 app.use(express.json({ limit: '50mb' }));
 
 // Endpoint para processar comprovante com OCR
-app.post('/api/process-receipt', async (req, res) => {
+app.post('/api/process-receipt', async (req: any, res: any) => {
   try {
     const { image } = req.body;
     
@@ -22,7 +22,7 @@ app.post('/api/process-receipt', async (req, res) => {
       image,
       'por',
       {
-        logger: (m) => console.log(m),
+        logger: (m: any) => console.log(m),
       }
     );
 
@@ -54,7 +54,11 @@ app.post('/api/process-receipt', async (req, res) => {
       success: true,
       data: {
         text,
-        amount: values ? values[0].replace('R$', '').trim() : null,
+        amount: values ? values[0]
+          .replace('R$', '')
+          .replace(/\./g, '') // Remove separador de milhares
+          .replace(',', '.') // Converte vírgula para ponto
+          .trim() : null,
         category: detectedCategory,
       }
     });
