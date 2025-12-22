@@ -1,14 +1,13 @@
 import { useCallback, useState } from 'react';
-import { useAuth } from './auth-context';
+import { useAuth } from '@/lib/auth-context';
 import {
   getTransactions,
   createTransaction,
   updateTransaction,
-  deleteTransaction,
-  getMonthlyStats,
+  deleteTransaction as deleteTransactionService,
   GetTransactionsParams,
-} from './services/transaction.service';
-import { Transaction, ApiResponse, PaginatedResponse } from './types';
+} from '@/lib/services/transaction.service';
+import { Transaction, ApiResponse, PaginatedResponse } from '@/lib/types';
 
 interface UseTransactionsResult {
   transactions: Transaction[];
@@ -111,7 +110,7 @@ export function useTransactions(): UseTransactionsResult {
       if (!user) return;
 
       try {
-        const response = await deleteTransaction(user.id, id);
+        const response = await deleteTransactionService(user.id, id);
 
         if (response.success) {
           setTransactions((prev) => prev.filter((t) => t.id !== id));
