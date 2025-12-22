@@ -1,29 +1,30 @@
 import { z } from 'zod';
+import { VALIDATION_MESSAGES, PASSWORD_REQUIREMENTS, TRANSACTION_TYPES } from './constants';
 
 // Auth schemas
 export const signUpSchema = z.object({
-  email: z.string().email('Email inválido'),
+  email: z.string().email(VALIDATION_MESSAGES.INVALID_EMAIL),
   password: z.string()
-    .min(8, 'Senha deve ter no mínimo 8 caracteres')
-    .regex(/[A-Z]/, 'Senha deve conter pelo menos uma letra maiúscula')
-    .regex(/[0-9]/, 'Senha deve conter pelo menos um número'),
-  name: z.string().min(2, 'Nome deve ter no mínimo 2 caracteres'),
+    .min(PASSWORD_REQUIREMENTS.MIN_LENGTH, VALIDATION_MESSAGES.PASSWORD_TOO_SHORT)
+    .regex(/[A-Z]/, VALIDATION_MESSAGES.PASSWORD_NEEDS_UPPERCASE)
+    .regex(/[0-9]/, VALIDATION_MESSAGES.PASSWORD_NEEDS_NUMBER),
+  name: z.string().min(2, VALIDATION_MESSAGES.REQUIRED),
 });
 
 export const signInSchema = z.object({
-  email: z.string().email('Email inválido'),
-  password: z.string().min(1, 'Senha é obrigatória'),
+  email: z.string().email(VALIDATION_MESSAGES.INVALID_EMAIL),
+  password: z.string().min(1, VALIDATION_MESSAGES.REQUIRED),
 });
 
 export const updatePasswordSchema = z.object({
-  currentPassword: z.string().min(1, 'Senha atual é obrigatória'),
+  currentPassword: z.string().min(1, VALIDATION_MESSAGES.REQUIRED),
   newPassword: z.string()
-    .min(8, 'Nova senha deve ter no mínimo 8 caracteres')
-    .regex(/[A-Z]/, 'Senha deve conter pelo menos uma letra maiúscula')
-    .regex(/[0-9]/, 'Senha deve conter pelo menos um número'),
+    .min(PASSWORD_REQUIREMENTS.MIN_LENGTH, VALIDATION_MESSAGES.PASSWORD_TOO_SHORT)
+    .regex(/[A-Z]/, VALIDATION_MESSAGES.PASSWORD_NEEDS_UPPERCASE)
+    .regex(/[0-9]/, VALIDATION_MESSAGES.PASSWORD_NEEDS_NUMBER),
   confirmPassword: z.string(),
 }).refine((data) => data.newPassword === data.confirmPassword, {
-  message: 'Senhas não conferem',
+  message: VALIDATION_MESSAGES.PASSWORDS_DONT_MATCH,
   path: ['confirmPassword'],
 });
 

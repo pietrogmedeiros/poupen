@@ -3,13 +3,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from './supabase';
 import * as bcrypt from 'bcrypt';
-
-interface User {
-  id: string;
-  email: string;
-  name?: string;
-  avatar_url?: string;
-}
+import { User } from './types';
+import { STORAGE_KEYS, BCRYPT_CONFIG, ERROR_MESSAGES } from './constants';
 
 interface AuthContextType {
   user: User | null;
@@ -31,9 +26,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function checkSession() {
     try {
-      const storedUser = localStorage.getItem('poupa_user');
+      const storedUser = localStorage.getItem(STORAGE_KEYS.USER);
       if (storedUser) {
-        const userData = JSON.parse(storedUser);
+        const userData = JSON.parse(storedUser) as User;
         // Verificar se o usuário ainda existe no banco
         const { data } = await supabase
           .from('users')
@@ -42,14 +37,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           .single();
 
         if (data) {
-          setUser(data);
+          setUser(data as User);
         } else {
-          localStorage.removeItem('poupa_user');
+          localStorage.removeItem(STORAGE_KEYS.USER);
         }
       }
     } catch (error) {
       console.error('Erro ao verificar sessão:', error);
-      localStorage.removeItem('poupa_user');
+      localStorage.removeItem(STORAGE_KEYS.USER);
     } finally {
       setLoading(false);
     }
@@ -61,7 +56,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const userId = crypto.randomUUID();
 
       // Hash da senha com bcrypt
-      const hashedPassword = await bcrypt.hash(password, 10);
+      const hashedPassword = await bcrypt.hash(password, BCRYPT_CONFIG.ROUNDS);
 
       // Inserir na tabela users COM a senha hasheada
       const { data, error } = await supabase.from('users').insert([
@@ -77,13 +72,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
       if (error) throw error;
 
-      setUser({
+      const newUser: User = {
         id: userId,
         email,
         name,
-      });
+      };
 
-      localStorage.setItem('poupa_user', JSON.stringify({ id: userId, email, name }));
+      setUser(newUser);
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(newUser));
     } catch (error) {
       console.error('Erro ao fazer signup:', error);
       throw error;
@@ -102,18 +98,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (error || !data) {
-        throw new Error('Usuário não encontrado');
+        throw new Error(ERROR_MESSAGES.USER_NOT_FOUND);
       }
 
       // Verificar senha com bcrypt
       const isPasswordCorrect = await bcrypt.compare(password, data.password_hash);
 
       if (!isPasswordCorrect) {
-        throw new Error('Senha incorreta');
+        throw new Error(ERROR_MESSAGES.INCORRECT_PASSWORD);
       }
 
-      setUser(data);
-      localStorage.setItem('poupa_user', JSON.stringify(data));
+      const user = data as User;
+      setUser(user);
+      localStorage.setItem(STORAGE_KEYS.USER, JSON.stringify(user));
     } catch (error) {
       console.error('Erro ao fazer signin:', error);
       throw error;
@@ -122,7 +119,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function signOut() {
     try {
-      localStorage.removeItem('poupa_user');
+      localStorage.removeItem(STORAGE_KEYS.USER);
       setUser(null);
     } catch (error) {
       console.error('Erro ao fazer signout:', error);

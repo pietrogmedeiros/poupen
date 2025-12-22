@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { processReceiptSchema } from '@/lib/schemas';
 import { validateRequest, errorResponse, successResponse } from '@/lib/api-validation';
+import { CATEGORY_KEYWORDS, DEFAULT_CATEGORY, AMOUNT_PATTERN } from '@/lib/constants';
 
 export async function POST(request: NextRequest) {
   try {
@@ -54,12 +55,12 @@ export async function POST(request: NextRequest) {
 
       if (!data.responses?.[0]?.fullTextAnnotation?.text) {
         // Se não conseguir extrair texto, retornar vazio
-        return NextResponse.json({
+        return successResponse({
           success: true,
           data: {
             text: '',
             amount: null,
-            category: 'outros',
+            category: DEFAULT_CATEGORY,
           },
         });
       }
@@ -67,24 +68,13 @@ export async function POST(request: NextRequest) {
       const text = data.responses[0].fullTextAnnotation.text;
 
       // Extrair valor (procura por padrões de valor monetário)
-      const valuePattern = /R\$?\s*(\d{1,3}(?:\.\d{3})*(?:,\d{2})?)/g;
-      const values = text.match(valuePattern);
+      const values = text.match(AMOUNT_PATTERN);
 
       // Extrair possíveis categorias (palavras-chave)
-      const categories = {
-        alimentacao: ['mercado', 'supermercado', 'restaurante', 'padaria', 'lanchonete', 'ifood', 'mcdonald', 'burger king', 'pizza'],
-        transporte: ['uber', '99', 'taxi', 'combustivel', 'gasolina', 'estacionamento', 'passagem', 'bus', 'metro'],
-        saude: ['farmacia', 'drogaria', 'clinica', 'hospital', 'medico', 'dentista'],
-        lazer: ['cinema', 'shopping', 'teatro', 'parque', 'jogo', 'game', 'streaming'],
-        educacao: ['livraria', 'curso', 'faculdade', 'escola', 'livro', 'aula'],
-        utilidades: ['agua', 'energia', 'telefone', 'internet', 'gas', 'conta'],
-        outros: [],
-      };
-
-      let detectedCategory = 'outros';
+      let detectedCategory = DEFAULT_CATEGORY;
       const lowerText = text.toLowerCase();
-
-      for (const [category, keywords] of Object.entries(categories)) {
+      
+      for (const [category, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
         if (keywords.some(keyword => lowerText.includes(keyword))) {
           detectedCategory = category;
           break;
@@ -113,7 +103,7 @@ export async function POST(request: NextRequest) {
         data: {
           text: '',
           amount: null,
-          category: 'outros',
+          category: DEFAULT_CATEGORY,
         },
       });
     }

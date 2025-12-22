@@ -44,24 +44,25 @@ app.post('/api/process-receipt', async (req: any, res: any) => {
       'por'
     );
 
-    // Extrair valor (procura por padrões de valor monetário)
-    const valuePattern = /R\$?\s*(\d{1,3}(?:\.\d{3})*(?:,\d{2})?)/g;
-    const values = text.match(valuePattern);
-    
-    // Extrair possíveis categorias (palavras-chave)
-    const categories = {
-      'alimentacao': ['mercado', 'supermercado', 'restaurante', 'padaria', 'lanchonete', 'ifood'],
-      'transporte': ['uber', '99', 'taxi', 'combustivel', 'gasolina', 'estacionamento'],
-      'saude': ['farmacia', 'drogaria', 'clinica', 'hospital', 'medico'],
-      'lazer': ['cinema', 'shopping', 'teatro', 'parque'],
-      'educacao': ['livraria', 'curso', 'faculdade', 'escola'],
-      'outros': []
+    // Importar constantes (ou definir inline para evitar imports de servidor)
+    const AMOUNT_PATTERN = /R\$?\s*(\d{1,3}(?:\.\d{3})*(?:,\d{2})?)/g;
+    const CATEGORY_KEYWORDS: Record<string, string[]> = {
+      alimentacao: ['mercado', 'supermercado', 'restaurante', 'padaria', 'lanchonete', 'ifood', 'mcdonald', 'burger king', 'pizza'],
+      transporte: ['uber', '99', 'taxi', 'combustivel', 'gasolina', 'estacionamento', 'passagem', 'bus', 'metro'],
+      saude: ['farmacia', 'drogaria', 'clinica', 'hospital', 'medico', 'dentista'],
+      lazer: ['cinema', 'shopping', 'teatro', 'parque', 'jogo', 'game', 'streaming'],
+      educacao: ['livraria', 'curso', 'faculdade', 'escola', 'livro', 'aula'],
+      utilidades: ['agua', 'energia', 'telefone', 'internet', 'gas', 'conta'],
+      outros: [],
     };
 
+    // Extrair valor (procura por padrões de valor monetário)
+    const values = text.match(AMOUNT_PATTERN);
+    
     let detectedCategory = 'outros';
     const lowerText = text.toLowerCase();
     
-    for (const [category, keywords] of Object.entries(categories)) {
+    for (const [category, keywords] of Object.entries(CATEGORY_KEYWORDS)) {
       if (keywords.some(keyword => lowerText.includes(keyword))) {
         detectedCategory = category;
         break;
