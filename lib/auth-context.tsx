@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from './supabase';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { User } from './types';
 import { STORAGE_KEYS, BCRYPT_CONFIG, ERROR_MESSAGES } from './constants';
 

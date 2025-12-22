@@ -1,7 +1,7 @@
 import { supabase } from '@/lib/supabase';
 import { User, UserProfile, ApiResponse } from '@/lib/types';
 import { handleError, createSuccessResponse } from '@/lib/error-handler';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { BCRYPT_CONFIG } from '@/lib/constants';
 
 export async function getUserProfile(userId: string): Promise<ApiResponse<UserProfile>> {
