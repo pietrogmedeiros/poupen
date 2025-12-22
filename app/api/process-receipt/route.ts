@@ -1,15 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { processReceiptSchema } from '@/lib/schemas';
+import { validateRequest, errorResponse, successResponse } from '@/lib/api-validation';
 
 export async function POST(request: NextRequest) {
   try {
-    const { image } = await request.json();
+    const body = await request.json();
 
-    if (!image) {
-      return NextResponse.json(
-        { error: 'Imagem não fornecida' },
-        { status: 400 }
-      );
+    // Validate request
+    const validation = validateRequest(processReceiptSchema, body);
+    if (!validation.success) {
+      return errorResponse('Imagem inválida ou não fornecida', 400);
     }
+
+    const { image } = validation.data!;
 
     // Usar Google Cloud Vision API como fallback
     // Se não tiver API key, retornar erro que será tratado no frontend
@@ -105,7 +108,7 @@ export async function POST(request: NextRequest) {
     } catch (visionError) {
       console.error('Erro ao usar Vision API:', visionError);
       // Se Vision API falhar, retornar sucesso vazio
-      return NextResponse.json({
+      return successResponse({
         success: true,
         data: {
           text: '',
@@ -116,9 +119,6 @@ export async function POST(request: NextRequest) {
     }
   } catch (error) {
     console.error('Erro ao processar comprovante:', error);
-    return NextResponse.json(
-      { error: 'Erro ao processar comprovante' },
-      { status: 500 }
-    );
+    return errorResponse('Erro ao processar comprovante', 500);
   }
 }

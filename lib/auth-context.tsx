@@ -2,6 +2,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { supabase } from './supabase';
+import * as bcrypt from 'bcrypt';
 
 interface User {
   id: string;
@@ -59,13 +60,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Gerar um UUID simples
       const userId = crypto.randomUUID();
 
-      // Inserir na tabela users COM a senha
+      // Hash da senha com bcrypt
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      // Inserir na tabela users COM a senha hasheada
       const { data, error } = await supabase.from('users').insert([
         {
           id: userId,
           email: email.toLowerCase().trim(),
           name,
-          password_hash: password, // Armazenar senha em plaintext por enquanto
+          password_hash: hashedPassword,
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         },
@@ -97,22 +101,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .ilike('email', normalizedEmail)
         .single();
 
-      console.log('SignIn Debug:', { email: normalizedEmail, error, dataExists: !!data });
-
       if (error || !data) {
-        console.error('Erro na query ou usuário não encontrado:', error);
         throw new Error('Usuário não encontrado');
       }
 
-      console.log('Usuário encontrado:', { id: data.id, email: data.email });
-
-      // Verificar senha em plaintext
-      const isPasswordCorrect = data.password_hash === password;
-      console.log('Comparando senhas:', { 
-        stored: data.password_hash, 
-        provided: password,
-        match: isPasswordCorrect 
-      });
+      // Verificar senha com bcrypt
+      const isPasswordCorrect = await bcrypt.compare(password, data.password_hash);
 
       if (!isPasswordCorrect) {
         throw new Error('Senha incorreta');
