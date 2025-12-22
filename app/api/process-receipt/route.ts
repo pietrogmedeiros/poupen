@@ -2,13 +2,16 @@ import { NextRequest, NextResponse } from 'next/server';
 import { processReceiptSchema } from '@/lib/schemas';
 import { validateRequest, errorResponse, successResponse } from '@/lib/api-validation';
 import { CATEGORY_KEYWORDS, DEFAULT_CATEGORY, AMOUNT_PATTERN } from '@/lib/constants';
+import { z } from 'zod';
+
+type ProcessReceiptInput = z.infer<typeof processReceiptSchema>;
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
     // Validate request
-    const validation = validateRequest(processReceiptSchema, body);
+    const validation = validateRequest<ProcessReceiptInput>(processReceiptSchema, body);
     if (!validation.success) {
       return errorResponse('Imagem inválida ou não fornecida', 400);
     }
