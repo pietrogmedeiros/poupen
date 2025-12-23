@@ -77,20 +77,20 @@ export function RankProgressCard({
   };
 
   return (
-    <div className={`rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm p-6 ${className}`}>
-      <h3 className="mb-6 text-lg font-bold text-white">Seu Progresso</h3>
+    <div className={`rounded-lg border dark:border-slate-700/50 light:border-gray-300 dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-md dark:backdrop-blur-sm p-6 transition-colors duration-200 ${className}`}>
+      <h3 className="mb-6 text-lg font-bold dark:text-white light:text-gray-900">Seu Progresso</h3>
 
       <div className="space-y-6">
         {/* Posição Atual */}
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm text-slate-400 mb-1">Posição Atual</p>
+            <p className="text-sm dark:text-slate-400 light:text-gray-500 mb-1">Posição Atual</p>
             <div className="flex items-baseline gap-2">
               <span className={`text-4xl font-bold bg-gradient-to-r ${getProgressColor(progressData.currentPosition)} bg-clip-text text-transparent`}>
                 #{progressData.currentPosition}
               </span>
               {progressData.nextPosition && (
-                <span className="text-sm text-slate-500">
+                <span className="text-sm dark:text-slate-500 light:text-gray-400">
                   (próximo: #{progressData.nextPosition})
                 </span>
               )}
@@ -99,7 +99,7 @@ export function RankProgressCard({
 
           {/* Taxa Atual */}
           <div className="text-right">
-            <p className="text-sm text-slate-400 mb-1">Taxa de Economia</p>
+            <p className="text-sm dark:text-slate-400 light:text-gray-500 mb-1">Taxa de Economia</p>
             <p className="text-3xl font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
               {progressData.currentTaxa.toFixed(1)}%
             </p>
@@ -110,7 +110,7 @@ export function RankProgressCard({
         {!progressData.isFirstPlace && (
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <p className="text-sm font-medium text-slate-300">
+              <p className="text-sm font-medium dark:text-slate-300 light:text-gray-700">
                 Progresso para #{progressData.nextPosition}
               </p>
               <p className="text-sm font-bold text-emerald-400">
@@ -118,7 +118,7 @@ export function RankProgressCard({
               </p>
             </div>
 
-            <div className="h-3 w-full overflow-hidden rounded-full bg-slate-700/50">
+            <div className="h-3 w-full overflow-hidden rounded-full dark:bg-slate-700/50 light:bg-gray-300">
               <div
                 className={`h-full bg-gradient-to-r ${getProgressColor(progressData.nextPosition!)} transition-all duration-500 ease-out`}
                 style={{ width: `${progressPercent}%` }}
@@ -126,24 +126,24 @@ export function RankProgressCard({
             </div>
 
             {/* Comparação com Próximo */}
-            <div className="mt-4 rounded-lg border border-slate-700/30 bg-slate-900/30 p-4">
-              <p className="text-xs text-slate-400 mb-3 uppercase tracking-wider">
+            <div className="mt-4 rounded-lg dark:border dark:border-slate-700/30 dark:bg-slate-900/30 light:border light:border-gray-300 light:bg-gray-50 p-4">
+              <p className="text-xs dark:text-slate-400 light:text-gray-500 mb-3 uppercase tracking-wider">
                 Próximo Rival
               </p>
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="font-semibold text-white truncate max-w-xs">
+                  <p className="font-semibold dark:text-white light:text-gray-900 truncate max-w-xs">
                     {progressData.nextUserName}
                   </p>
-                  <p className="text-sm text-slate-400 mt-1">
-                    Taxa: <span className="text-cyan-400 font-bold">
+                  <p className="text-sm dark:text-slate-400 light:text-gray-500 mt-1">
+                    Taxa: <span className="dark:text-cyan-400 light:text-blue-600 font-bold">
                       {progressData.nextUserTaxa?.toFixed(1)}%
                     </span>
                   </p>
                 </div>
                 <div className="text-right">
-                  <p className="text-sm text-slate-400 mb-1">Faltam</p>
-                  <p className="text-2xl font-bold text-yellow-400">
+                  <p className="text-sm dark:text-slate-400 light:text-gray-500 mb-1">Faltam</p>
+                  <p className="text-2xl font-bold dark:text-yellow-400 light:text-orange-500">
                     +{progressData.taxaDifference.toFixed(2)}%
                   </p>
                 </div>
@@ -153,13 +153,13 @@ export function RankProgressCard({
         )}
 
         {/* Mensagem Motivacional */}
-        <div className={`rounded-lg border ${
+        <div className={`rounded-lg border p-4 ${
           progressData.isFirstPlace
-            ? 'border-yellow-500/30 bg-yellow-500/10'
-            : 'border-emerald-500/30 bg-emerald-500/10'
-        } p-4`}>
+            ? 'dark:border-yellow-500/30 dark:bg-yellow-500/10 light:border-yellow-300 light:bg-yellow-50'
+            : 'dark:border-emerald-500/30 dark:bg-emerald-500/10 light:border-emerald-300 light:bg-emerald-50'
+        }`}>
           <p className={`text-sm font-semibold ${
-            progressData.isFirstPlace ? 'text-yellow-300' : 'text-emerald-300'
+            progressData.isFirstPlace ? 'dark:text-yellow-300 light:text-yellow-700' : 'dark:text-emerald-300 light:text-emerald-700'
           }`}>
             {progressData.message}
           </p>
@@ -167,9 +167,9 @@ export function RankProgressCard({
 
         {/* Dica Extra */}
         {!progressData.isFirstPlace && (
-          <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-3">
-            <p className="text-xs text-slate-400">
-              💡 <span className="text-slate-300">Reduzir despesas ou aumentar entradas pode ajudar a subir no ranking!</span>
+          <div className="rounded-lg dark:border dark:border-slate-700/30 dark:bg-slate-900/30 light:border light:border-gray-300 light:bg-gray-50 p-3">
+            <p className="text-xs dark:text-slate-400 light:text-gray-500">
+              💡 <span className="dark:text-slate-300 light:text-gray-700">Reduzir despesas ou aumentar entradas pode ajudar a subir no ranking!</span>
             </p>
           </div>
         )}

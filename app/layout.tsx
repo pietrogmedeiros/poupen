@@ -6,6 +6,7 @@ import { MobileNav } from "@/components/MobileNav";
 import { AuthProvider } from "@/lib/auth-context";
 import { NotificationHandler } from "@/components/NotificationHandler";
 import { ValueVisibilityProvider } from "@/lib/ValueVisibilityContext";
+import { ThemeProvider } from "@/components/ThemeProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,21 +34,27 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 dark:bg-slate-950`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-slate-950 light:bg-white transition-colors duration-200`}
       >
-        <AuthProvider>
-          <ValueVisibilityProvider>
-            <NotificationHandler>
-              <MobileNav />
-              <div className="flex min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex-col md:flex-row">
-                <Sidebar />
-                <main className="flex-1 md:ml-20 mt-16 md:mt-0">
-                  <div className="min-h-screen p-4 md:p-8 bg-gradient-to-br from-slate-950 via-slate-900/50 to-slate-950">
-                    <div className="max-w-7xl mx-auto">
-                      {children}
+        <ThemeProvider>
+          <AuthProvider>
+            <ValueVisibilityProvider>
+              <NotificationHandler>
+                <MobileNav />
+                <div className="flex min-h-screen dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 light:bg-gradient-to-br light:from-white light:via-gray-50 light:to-gray-100 flex-col md:flex-row">
+                  <Sidebar />
+                  <main className="flex-1 md:ml-20 mt-16 md:mt-0">
+                    <div className="min-h-screen p-4 md:p-8 dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900/50 dark:to-slate-950 light:bg-gradient-to-br light:from-white light:via-gray-50/50 light:to-gray-100 transition-colors duration-200">
+                      <div className="max-w-7xl mx-auto">
+                        {children}
+                      </div>
                     </div>
-                  </div>
-                </main>
+                  </main>
+                </div>
+              </NotificationHandler>
+            </ValueVisibilityProvider>
+          </AuthProvider>
+        </ThemeProvider>
               </div>
             </NotificationHandler>
           </ValueVisibilityProvider>
