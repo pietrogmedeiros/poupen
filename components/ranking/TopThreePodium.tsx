@@ -56,12 +56,11 @@ export function TopThreePodium({
           const position = ranking.posicao;
           const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : '🥉';
           const podiumHeight = position === 1 ? 'h-40' : position === 2 ? 'h-32' : 'h-24';
-          const podiumBg =
-            position === 1
-              ? 'from-yellow-500/20 to-yellow-600/20 border-yellow-500/50'
-              : position === 2
-                ? 'from-slate-400/20 to-slate-500/20 border-slate-400/50'
-                : 'from-orange-500/20 to-orange-600/20 border-orange-500/50';
+          const podiumBgStyle = position === 1
+            ? {background: 'linear-gradient(135deg, rgba(234, 179, 8, 0.2), rgba(202, 138, 4, 0.2))', borderColor: 'rgba(234, 179, 8, 0.5)'}
+            : position === 2
+              ? {background: 'linear-gradient(135deg, rgba(148, 163, 184, 0.2), rgba(100, 116, 139, 0.2))', borderColor: 'rgba(148, 163, 184, 0.5)'}
+              : {background: 'linear-gradient(135deg, rgba(249, 115, 22, 0.2), rgba(217, 119, 6, 0.2))', borderColor: 'rgba(249, 115, 22, 0.5)'}
 
           const userName = ranking.users.name || 'User';
           const initialsFromName = userName
@@ -80,10 +79,11 @@ export function TopThreePodium({
 
                 {/* Podium */}
                 <div
-                  className={`relative w-20 rounded-t-lg border-2 bg-gradient-to-r ${podiumBg} transition-all duration-300 group-hover:shadow-lg ${podiumHeight}`}
+                  className={`relative w-20 rounded-t-lg border-2 transition-all duration-300 group-hover:shadow-lg ${podiumHeight}`}
+                  style={{...podiumBgStyle}}
                 >
                   {/* Position Number */}
-                  <div className="absolute -top-6 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 dark:border-slate-700 dark:text-white text-lg font-bold">
+                  <div className="absolute -top-6 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full text-lg font-bold" style={{background: 'var(--bg-primary)', borderColor: 'var(--border-primary)', border: '2px solid', color: 'var(--text-primary)'}}>
                     #{position}
                   </div>
 
