@@ -1,6 +1,9 @@
 import React from 'react';
 import { TopThreePodium } from '@/components/ranking/TopThreePodium';
 import { YourRankCard } from '@/components/ranking/YourRankCard';
+import { RankProgressCard } from '@/components/ranking/RankProgressCard';
+import { HeadToHeadCard } from '@/components/ranking/HeadToHeadCard';
+import { RankPredictor } from '@/components/ranking/RankPredictor';
 import { RankingLeaderboard } from '@/components/ranking/RankingLeaderboard';
 import { getCurrentMonth } from '@/lib/ranking';
 import { fetchRankings, fetchUserRanking } from '@/lib/ranking-queries';
@@ -56,14 +59,79 @@ export default async function RankingPage() {
           )}
 
           {/* Your Position */}
-          {user?.id && userRankingData && (
+          {user?.id && userRankingData ? (
+            <>
+              <div className="mb-12 grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <YourRankCard
+                    ranking={userRankingData}
+                    loading={false}
+                  />
+                </div>
+                <div>
+                  <RankProgressCard
+                    userRanking={userRankingData}
+                    allRankings={rankings}
+                  />
+                </div>
+              </div>
+
+              {/* Head to Head */}
+              <div className="mb-12">
+                <HeadToHeadCard
+                  userRanking={userRankingData}
+                  allRankings={rankings}
+                />
+              </div>
+
+              {/* Rank Predictor */}
+              <div className="mb-12">
+                <RankPredictor
+                  userRanking={userRankingData}
+                  allRankings={rankings}
+                  currentEconomyData={{
+                    entradas_total: userRankingData.entradas_total,
+                    despesas_total: userRankingData.despesas_total,
+                  }}
+                />
+              </div>
+            </>
+          ) : rankings.length > 0 ? (
+            // Demo mode - mostrar exemplo dos componentes
             <div className="mb-12">
-              <YourRankCard
-                ranking={userRankingData}
-                loading={false}
-              />
+              <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4 mb-6">
+                <p className="text-sm text-amber-300">
+                  💡 <strong>Faça login</strong> para ver sua posição no ranking e acessar todos os recursos interativos!
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div>
+                  <RankProgressCard
+                    userRanking={rankings[0]}
+                    allRankings={rankings}
+                  />
+                </div>
+                <div>
+                  <RankPredictor
+                    userRanking={rankings[0]}
+                    allRankings={rankings}
+                    currentEconomyData={{
+                      entradas_total: rankings[0].entradas_total,
+                      despesas_total: rankings[0].despesas_total,
+                    }}
+                  />
+                </div>
+              </div>
+
+              <div className="mt-6">
+                <HeadToHeadCard
+                  userRanking={rankings[0]}
+                  allRankings={rankings}
+                />
+              </div>
             </div>
-          )}
+          ) : null}
 
           {/* Stats Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
