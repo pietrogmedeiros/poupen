@@ -35,7 +35,7 @@ export function TopThreePodium({
       <div
         className={`rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm px-6 py-8 text-center ${className}`}
       >
-        <p className="text-slate-400">🏆 Ranking ainda não disponível</p>
+        <p className="text-slate-400">Ranking ainda não disponível</p>
       </div>
     );
   }
@@ -45,8 +45,8 @@ export function TopThreePodium({
       className={`rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm p-6 ${className}`}
     >
       {/* Title */}
-      <h3 className="mb-8 text-center text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-        🏆 Top 3 do Mês
+      <h3 className="mb-8 text-center text-lg font-bold text-white">
+        Top 3 do Mês
       </h3>
 
       {/* Podium Container */}
@@ -109,7 +109,7 @@ export function TopThreePodium({
                 {/* Taxa */}
                 <div className="w-full rounded-lg bg-slate-900/50 px-2 py-1 text-center border border-slate-700/50">
                   <p className="text-xs text-slate-400">Taxa</p>
-                  <p className="text-sm font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                  <p className="text-sm font-bold text-orange-500">
                     {formatEconomia(ranking.economia_taxa)}
                   </p>
                 </div>

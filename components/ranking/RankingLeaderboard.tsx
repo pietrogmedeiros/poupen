@@ -53,17 +53,17 @@ export function RankingLeaderboard({
       {/* Header */}
       <div className="sticky top-0 z-10 rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm px-4 py-3">
         <h2 className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
-          📊 Poupen Ranking
+          Poupen Ranking
         </h2>
         <p className="text-xs text-slate-400 mt-1">
-          Compete com outros poupadoras e ganhe badges exclusivos!
+          Compete com outros poupadores e ganhe badges exclusivos!
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
         <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
-          ❌ {error}
+          Erro: {error}
         </div>
       )}
 

@@ -60,10 +60,10 @@ export async function generateRankingSitemap() {
 export function generateRankingMetadata(month: string) {
   return {
     title: `Ranking Poupen - ${month}`,
-    description: 'Compete com outras poupadoras e ganhe badges exclusivos no Poupen Ranking',
+    description: 'Compete com outros poupadores e ganhe badges exclusivos no Poupen Ranking',
     openGraph: {
       title: `Ranking Poupen - ${month}`,
-      description: 'Compete com outras poupadoras e ganhe badges exclusivos',
+      description: 'Compete com outros poupadores e ganhe badges exclusivos',
       images: [
         {
           url: '/og-ranking.png',

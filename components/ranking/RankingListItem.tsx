@@ -38,11 +38,11 @@ export function RankingListItem({
   const getRankMedal = (position: number) => {
     switch (position) {
       case 1:
-        return '🥇';
+        return '1º'
       case 2:
-        return '🥈';
+        return '2º'
       case 3:
-        return '🥉';
+        return '3º'
       default:
         return null;
     }

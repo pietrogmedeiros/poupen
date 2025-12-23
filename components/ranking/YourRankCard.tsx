@@ -114,7 +114,7 @@ export function YourRankCard({
               <div>
                 <p className="text-xs text-slate-400">Streak</p>
                 <p className={`text-2xl font-bold ${getStreakColor(ranking.users.current_streak)}`}>
-                  {ranking.users.current_streak}🔥
+                  {ranking.users.current_streak} meses
                 </p>
               </div>
             </div>
@@ -125,20 +125,8 @@ export function YourRankCard({
             className={`flex h-20 w-20 flex-shrink-0 items-center justify-center rounded-lg border-2 bg-gradient-to-br ${getRankColor(ranking.posicao)} text-center font-bold text-white group-hover:scale-110 transition-transform`}
           >
             <div className="text-sm">
-              <div className="text-3xl mb-1">
-                {ranking.posicao === 1
-                  ? '🥇'
-                  : ranking.posicao === 2
-                    ? '🥈'
-                    : ranking.posicao === 3
-                      ? '🥉'
-                      : ranking.posicao <= 10
-                        ? '🏆'
-                        : ranking.posicao <= 25
-                          ? '⭐'
-                          : '📊'}
-              </div>
-              <div className="text-xs">Top {ranking.posicao > 25 ? '25+' : ranking.posicao}</div>
+              <div className="text-3xl mb-1 font-bold">{ranking.posicao}</div>
+              <div className="text-xs">lugar</div>
             </div>
           </div>
         </div>
@@ -170,14 +158,14 @@ export function YourRankCard({
             </p>
           )}
           {ranking.posicao <= 10 && ranking.posicao > 3 && (
-            <p className="text-emerald-400 font-semibold">🏆 Ótima posição! Top 10!</p>
+            <p className="text-orange-500 font-semibold">Excelente posição! Top 10!</p>
           )}
           {ranking.posicao > 10 && ranking.posicao <= 25 && (
             <p className="text-blue-400 font-semibold">⭐ Você está no Top 25</p>
           )}
           {ranking.users.current_streak >= 3 && (
             <p className="mt-2 text-red-400 font-semibold">
-              🔥 Streak de {ranking.users.current_streak} meses! Continue assim!
+              Streak de {ranking.users.current_streak} meses! Continue assim!
             </p>
           )}
         </div>
