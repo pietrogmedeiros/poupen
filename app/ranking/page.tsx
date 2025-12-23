@@ -83,7 +83,7 @@ export default async function RankingPage() {
                 />
               </div>
             </>
-          ) : user?.id ? (
+          ) : user?.id && !userRankingData ? (
             // Usuário autenticado mas sem dados de ranking
             <div className="mb-12 rounded-lg border border-blue-500/50 bg-blue-500/10 p-6 text-center">
               <p className="text-blue-300 text-lg">
@@ -92,30 +92,6 @@ export default async function RankingPage() {
               <p className="text-blue-200/70 text-sm mt-2">
                 O ranking é atualizado diariamente. Enquanto isso, veja a posição de outros usuários abaixo.
               </p>
-            </div>
-          ) : rankings.length > 0 && !user?.id ? (
-            // Demo mode - mostrar exemplo dos componentes APENAS para não-autenticados
-            <div className="mb-12">
-              <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4 mb-6">
-                <p className="text-sm text-amber-300">
-                  💡 <strong>Faça login</strong> para ver sua posição no ranking e acessar todos os recursos interativos!
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div>
-                  <RankProgressCard
-                    userRanking={rankings[0]}
-                    allRankings={rankings}
-                  />
-                </div>
-                <div>
-                  <HeadToHeadCard
-                    userRanking={rankings[0]}
-                    allRankings={rankings}
-                  />
-                </div>
-              </div>
             </div>
           ) : null}
 
