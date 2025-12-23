@@ -13,22 +13,16 @@ interface HeadToHeadCardProps {
   className?: string;
 }
 
-/**
- * HeadToHeadCard - Compara taxa de economia com outro usuário
- * Componente interativo com seleção de rival
- */
 export function HeadToHeadCard({
   userRanking,
   allRankings,
   className = '',
 }: HeadToHeadCardProps) {
-  // Excluir o usuário atual da lista de possíveis rivais
   const rivals = useMemo(
     () => allRankings.filter((r) => r.user_id !== userRanking.user_id),
     [allRankings, userRanking.user_id]
   );
 
-  // Sugerir rival: usuário na posição imediatamente anterior
   const suggestedRival = useMemo(() => {
     return rivals.find((r) => r.posicao === userRanking.posicao - 1) || rivals[0];
   }, [rivals, userRanking.posicao]);
@@ -53,12 +47,11 @@ export function HeadToHeadCard({
   const progressPercent = Math.max(0, Math.min(100, ((userTaxa / rivalTaxa) * 50) + 25));
 
   return (
-    <div className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm dark:backdrop-blur-sm p-6 ${className}`}>
-      <h3 className="mb-4 text-lg font-bold dark:text-white light:text-gray-900">⚔️ Duelo Direto</h3>
+    <div className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm dark:backdrop-blur-sm p-6 transition-colors duration-200 ${className}`}>
+      <h3 className={`mb-4 text-lg font-bold ${themeClasses.text.primary}`}>⚔️ Duelo Direto</h3>
 
-      {/* Seletor de Rival */}
       <div className="mb-6">
-        <label className="text-xs dark:text-slate-400 light:text-gray-500 uppercase tracking-wider mb-2 block">
+        <label className={`text-xs ${themeClasses.text.tertiary} uppercase tracking-wider mb-2 block`}>
           Escolha um Rival
         </label>
         <select
@@ -75,64 +68,58 @@ export function HeadToHeadCard({
         </select>
       </div>
 
-      {/* Comparação Visual */}
       <div className="space-y-4">
-        {/* Headers */}
         <div className="grid grid-cols-2 gap-4">
-          {/* Usuário */}
-          <div className="flex items-center gap-3 p-3 rounded-lg border border-emerald-500/30 bg-emerald-500/10">
+          <div className={`flex items-center gap-3 p-3 rounded-lg dark:border-emerald-500/30 dark:bg-emerald-500/10 light:border-emerald-300 light:bg-emerald-50`}>
             <Avatar
               src={userRanking.users.avatar_url || undefined}
               alt={userRanking.users.name}
               className="h-10 w-10"
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-white truncate">Você</p>
-              <p className="text-xs text-slate-400">
+              <p className={`text-sm font-bold ${themeClasses.text.primary} truncate`}>Você</p>
+              <p className={`text-xs ${themeClasses.text.tertiary}`}>
                 #{userRanking.posicao}
               </p>
             </div>
           </div>
 
-          {/* Rival */}
-          <div className="flex items-center gap-3 p-3 rounded-lg border border-purple-500/30 bg-purple-500/10">
+          <div className={`flex items-center gap-3 p-3 rounded-lg dark:border-purple-500/30 dark:bg-purple-500/10 light:border-purple-300 light:bg-purple-50`}>
             <Avatar
               src={selectedRival.users.avatar_url || undefined}
               alt={selectedRival.users.name}
               className="h-10 w-10"
             />
             <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-white truncate">
+              <p className={`text-sm font-bold ${themeClasses.text.primary} truncate`}>
                 {selectedRival.users.name.split(' ')[0]}
               </p>
-              <p className="text-xs text-slate-400">
+              <p className={`text-xs ${themeClasses.text.tertiary}`}>
                 #{selectedRival.posicao}
               </p>
             </div>
           </div>
         </div>
 
-        {/* Taxa de Economia */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-4 text-center">
-            <p className="text-xs text-slate-400 mb-2">Taxa</p>
-            <p className={`text-3xl font-bold ${isUserAhead ? 'text-emerald-400' : 'text-red-400'}`}>
+          <div className={`rounded-lg ${themeClasses.border.subtle} ${themeClasses.bg.secondary} p-4 text-center transition-colors duration-200`}>
+            <p className={`text-xs ${themeClasses.text.tertiary} mb-2`}>Taxa</p>
+            <p className={`text-3xl font-bold ${isUserAhead ? 'dark:text-emerald-400 light:text-emerald-600' : 'dark:text-red-400 light:text-red-600'}`}>
               {userTaxa.toFixed(1)}%
             </p>
           </div>
 
-          <div className="rounded-lg border border-slate-700/30 bg-slate-900/30 p-4 text-center">
-            <p className="text-xs text-slate-400 mb-2">Taxa</p>
-            <p className={`text-3xl font-bold ${!isUserAhead ? 'text-emerald-400' : 'text-red-400'}`}>
+          <div className={`rounded-lg ${themeClasses.border.subtle} ${themeClasses.bg.secondary} p-4 text-center transition-colors duration-200`}>
+            <p className={`text-xs ${themeClasses.text.tertiary} mb-2`}>Taxa</p>
+            <p className={`text-3xl font-bold ${!isUserAhead ? 'dark:text-emerald-400 light:text-emerald-600' : 'dark:text-red-400 light:text-red-600'}`}>
               {rivalTaxa.toFixed(1)}%
             </p>
           </div>
         </div>
 
-        {/* Barra de Comparação */}
         <div className="space-y-2">
-          <p className="text-xs text-slate-400 font-medium">Vantagem</p>
-          <div className="h-2 w-full overflow-hidden rounded-full bg-slate-700/50">
+          <p className={`text-xs ${themeClasses.text.tertiary} font-medium`}>Vantagem</p>
+          <div className={`h-2 w-full overflow-hidden rounded-full dark:bg-slate-700/50 light:bg-gray-300`}>
             <div
               className={`h-full bg-gradient-to-r ${
                 isUserAhead
@@ -142,29 +129,27 @@ export function HeadToHeadCard({
               style={{ width: `${progressPercent}%` }}
             />
           </div>
-          <p className={`text-sm font-bold ${isUserAhead ? 'text-emerald-400' : 'text-purple-400'}`}>
+          <p className={`text-sm font-bold ${isUserAhead ? 'dark:text-emerald-400 light:text-emerald-600' : 'dark:text-purple-400 light:text-purple-600'}`}>
             {isUserAhead ? '+' : ''}{difference.toFixed(2)}% {isUserAhead ? 'na frente' : 'atrás'}
           </p>
         </div>
 
-        {/* Resultado */}
-        <div className={`rounded-lg border p-4 ${
+        <div className={`rounded-lg border p-4 transition-colors duration-200 ${
           isUserAhead
-            ? 'border-emerald-500/30 bg-emerald-500/10'
-            : 'border-purple-500/30 bg-purple-500/10'
+            ? 'dark:border-emerald-500/30 dark:bg-emerald-500/10 light:border-emerald-300 light:bg-emerald-50'
+            : 'dark:border-purple-500/30 dark:bg-purple-500/10 light:border-purple-300 light:bg-purple-50'
         }`}>
-          <p className={`text-sm font-semibold ${isUserAhead ? 'text-emerald-300' : 'text-purple-300'}`}>
+          <p className={`text-sm font-semibold ${isUserAhead ? 'dark:text-emerald-300 light:text-emerald-700' : 'dark:text-purple-300 light:text-purple-700'}`}>
             {isUserAhead
               ? `🎯 Você está na frente! ${Math.abs(difference).toFixed(2)}% de vantagem.`
               : `⚡ ${selectedRival.users.name} está na frente. Você precisa de +${Math.abs(difference).toFixed(2)}% para alcançá-lo.`}
           </p>
         </div>
 
-        {/* Badges Comparação */}
         {(userRanking.badges.length > 0 || selectedRival.badges.length > 0) && (
           <div className="grid grid-cols-2 gap-4 pt-2">
             <div>
-              <p className="text-xs text-slate-400 mb-2 font-medium">Seus Badges</p>
+              <p className={`text-xs ${themeClasses.text.tertiary} mb-2 font-medium`}>Seus Badges</p>
               <div className="flex flex-wrap gap-1">
                 {userRanking.badges.length > 0 ? (
                   userRanking.badges.slice(0, 3).map((badge) => (
@@ -173,13 +158,13 @@ export function HeadToHeadCard({
                     </Badge>
                   ))
                 ) : (
-                  <p className="text-xs text-slate-500">Nenhum ainda</p>
+                  <p className={`text-xs ${themeClasses.text.tertiary}`}>Nenhum ainda</p>
                 )}
               </div>
             </div>
 
             <div>
-              <p className="text-xs text-slate-400 mb-2 font-medium">Badges do Rival</p>
+              <p className={`text-xs ${themeClasses.text.tertiary} mb-2 font-medium`}>Badges do Rival</p>
               <div className="flex flex-wrap gap-1">
                 {selectedRival.badges.length > 0 ? (
                   selectedRival.badges.slice(0, 3).map((badge) => (
@@ -188,7 +173,7 @@ export function HeadToHeadCard({
                     </Badge>
                   ))
                 ) : (
-                  <p className="text-xs text-slate-500">Nenhum ainda</p>
+                  <p className={`text-xs ${themeClasses.text.tertiary}`}>Nenhum ainda</p>
                 )}
               </div>
             </div>
