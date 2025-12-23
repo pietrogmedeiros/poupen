@@ -55,10 +55,6 @@ export default function RootLayout({
             </ValueVisibilityProvider>
           </AuthProvider>
         </ThemeProvider>
-              </div>
-            </NotificationHandler>
-          </ValueVisibilityProvider>
-        </AuthProvider>
       </body>
     </html>
   );
