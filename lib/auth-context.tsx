@@ -59,7 +59,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       const hashedPassword = await bcrypt.hash(password, BCRYPT_CONFIG.ROUNDS);
 
       // Inserir na tabela users COM a senha hasheada
-      const { data, error } = await supabase.from('users').insert([
+      // @ts-ignore - Supabase typing issue
+      const { data, error } = await (supabase.from('users').insert([
         {
           id: userId,
           email: email.toLowerCase().trim(),
@@ -68,7 +69,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString(),
         },
-      ]);
+      ]) as any);
 
       if (error) throw error;
 
@@ -91,6 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // Buscar usuário pelo email (normalizado)
       const normalizedEmail = email.toLowerCase().trim();
       
+      // @ts-ignore - Supabase typing issue
       const { data, error } = await supabase
         .from('users')
         .select('*')
@@ -102,7 +104,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       }
 
       // Verificar senha com bcrypt
-      const isPasswordCorrect = await bcrypt.compare(password, data.password_hash);
+      const isPasswordCorrect = await bcrypt.compare(password, (data as any).password_hash);
 
       if (!isPasswordCorrect) {
         throw new Error(ERROR_MESSAGES.INCORRECT_PASSWORD);

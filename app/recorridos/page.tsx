@@ -5,7 +5,7 @@ import { Plus, Edit2, Trash2, Calendar, DollarSign, Loader2 } from 'lucide-react
 import { useAuth } from '@/lib/auth-context';
 import { useValueVisibility } from '@/lib/ValueVisibilityContext';
 import { MaskedValue } from '@/components/MaskedValue';
-import { gradients } from '@/lib/colorMap';
+
 import { 
   fetchRecurringTransactions, 
   createRecurringTransaction,
@@ -139,7 +139,7 @@ export default function RecorridosPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-600 dark:text-gray-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-[var(--text-secondary)]" />
       </div>
     );
   }
@@ -147,7 +147,7 @@ export default function RecorridosPage() {
   if (!user) {
     return (
       <div className="flex items-center justify-center h-96">
-        <p className="text-gray-600 dark:text-gray-400">Faça login para continuar</p>
+        <p className="text-[var(--text-secondary)]">Faça login para continuar</p>
       </div>
     );
   }
@@ -162,16 +162,13 @@ export default function RecorridosPage() {
   };
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center justify-between">
+    <div className="space-y-6 md:space-y-8">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 
-            className="text-5xl font-bold text-transparent bg-clip-text"
-            style={{ backgroundImage: gradients.slate }}
-          >
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
             Recorridos
           </h1>
-          <p className="text-slate-400 mt-3 text-lg">
+          <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
             Gerencie suas despesas e receitas recorrentes
           </p>
         </div>
@@ -192,9 +189,9 @@ export default function RecorridosPage() {
               });
             }
           }}
-          className="flex items-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-semibold"
+          className="flex items-center justify-center gap-2 bg-[var(--accent-primary)] hover:opacity-90 text-white px-5 py-2.5 rounded-lg transition-opacity font-medium text-sm md:text-base w-full md:w-auto"
         >
-          <Plus size={20} />
+          <Plus className="w-4 h-4 md:w-5 md:h-5" />
           Nova Recorrência
         </button>
       </div>

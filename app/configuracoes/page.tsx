@@ -5,7 +5,7 @@ import { User, Mail, Lock, LogOut, Camera, Save, X, Loader2 } from 'lucide-react
 import { supabase } from '@/lib/supabase';
 import { fetchUserProfile, updateUserProfile } from '@/lib/supabase-queries';
 import { useAuth } from '@/lib/auth-context';
-import { gradients } from '@/lib/colorMap';
+
 import { useRouter } from 'next/navigation';
 
 export default function ConfiguracoesPage() {
@@ -196,63 +196,60 @@ export default function ConfiguracoesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 
-          className="text-5xl font-bold text-transparent bg-clip-text"
-          style={{ backgroundImage: gradients.slate }}
-        >
+        <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
           Configurações
         </h1>
-        <p className="text-slate-400 mt-3 text-lg">
+        <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
           Gerencie sua conta e preferências
         </p>
       </div>
 
       {successMessage && (
-        <div className="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 flex items-center gap-3">
-          <div className="w-5 h-5 bg-green-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+        <div className="bg-[var(--status-success)]/10 border border-[var(--status-success)] rounded-lg p-4 flex items-center gap-3">
+          <div className="w-5 h-5 bg-[var(--status-success)] rounded-full flex items-center justify-center text-white text-sm font-bold">
             ✓
           </div>
-          <p className="text-green-800 dark:text-green-200">{successMessage}</p>
+          <p className="text-[var(--status-success)]">{successMessage}</p>
         </div>
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700 space-y-6">
+          <div className="bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg p-6 shadow-sm space-y-6">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-gray-700 to-gray-800 border-4 border-gray-200 dark:border-gray-700 flex items-center justify-center overflow-hidden">
+                <div className="w-24 h-24 rounded-full bg-[var(--bg-hover)] border-4 border-[var(--border-primary)] flex items-center justify-center overflow-hidden">
                   {userProfile.avatar_url ? (
                     <img src={userProfile.avatar_url} alt="Avatar" className="w-full h-full object-cover" />
                   ) : (
-                    <User className="w-12 h-12 text-gray-400" />
+                    <User className="w-12 h-12 text-[var(--text-secondary)]" />
                   )}
                 </div>
                 <button
                   onClick={() => setShowAvatarUpload(true)}
-                  className="absolute bottom-0 right-0 bg-gray-700 hover:bg-gray-800 text-white p-2 rounded-full shadow-lg transition-colors"
+                  className="absolute bottom-0 right-0 bg-[var(--accent-primary)] hover:opacity-90 text-white p-2 rounded-full shadow-lg transition-opacity"
                 >
                   <Camera className="w-4 h-4" />
                 </button>
               </div>
 
               <div className="text-center">
-                <h2 className="text-xl font-bold text-gray-900 dark:text-white">
+                <h2 className="text-xl font-bold text-[var(--text-primary)]">
                   {userProfile.name}
                 </h2>
-                <p className="text-sm text-gray-600 dark:text-gray-400">
+                <p className="text-sm text-[var(--text-secondary)]">
                   {userProfile.email}
                 </p>
               </div>
             </div>
 
-            <nav className="space-y-2 border-t border-gray-200 dark:border-gray-700 pt-6">
+            <nav className="space-y-2 border-t border-[var(--border-primary)] pt-6">
               <button
                 onClick={() => setActiveTab('perfil')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
                   activeTab === 'perfil'
-                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                    ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                    : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                 }`}
               >
                 <User className="w-5 h-5" />
@@ -262,8 +259,8 @@ export default function ConfiguracoesPage() {
                 onClick={() => setActiveTab('senha')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
                   activeTab === 'senha'
-                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                    ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                    : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                 }`}
               >
                 <Lock className="w-5 h-5" />
@@ -273,8 +270,8 @@ export default function ConfiguracoesPage() {
                 onClick={() => setActiveTab('email')}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all duration-200 font-medium ${
                   activeTab === 'email'
-                    ? 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
-                    : 'text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700/50'
+                    ? 'bg-[var(--bg-hover)] text-[var(--text-primary)]'
+                    : 'text-[var(--text-secondary)] hover:bg-[var(--bg-hover)]'
                 }`}
               >
                 <Mail className="w-5 h-5" />
@@ -284,7 +281,7 @@ export default function ConfiguracoesPage() {
 
             <button 
               onClick={handleLogout}
-              className="w-full flex items-center justify-center gap-2 px-4 py-3 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors font-medium border-t border-gray-200 dark:border-gray-700 pt-6 mt-6"
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 text-[var(--status-error)] hover:bg-[var(--status-error)]/10 rounded-lg transition-colors font-medium border-t border-[var(--border-primary)] pt-6 mt-6"
             >
               <LogOut className="w-5 h-5" />
               Logout
@@ -292,7 +289,7 @@ export default function ConfiguracoesPage() {
           </div>
         </div>
 
-        <div className="lg:col-span-2 bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+        <div className="lg:col-span-2 bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg p-6 shadow-sm">
           {activeTab === 'perfil' && (
             <div className="space-y-6">
               <div>

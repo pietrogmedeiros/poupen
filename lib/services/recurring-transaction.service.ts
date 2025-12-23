@@ -27,14 +27,16 @@ export async function createRecurringTransaction(
   transaction: Omit<RecurringTransaction, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'deleted_at'>
 ): Promise<ApiResponse<RecurringTransaction>> {
   try {
-    const { data, error } = await supabase
+    const insertData = {
+      user_id: userId,
+      ...transaction,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await (supabase
       .from('recurring_transactions')
-      .insert({
-        user_id: userId,
-        ...transaction,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
+      .insert(insertData as any) as any)
       .select()
       .single();
 
@@ -53,14 +55,18 @@ export async function updateRecurringTransaction(
   updates: Partial<Omit<RecurringTransaction, 'id' | 'user_id' | 'created_at' | 'deleted_at'>>
 ): Promise<ApiResponse<RecurringTransaction>> {
   try {
-    const { data, error } = await supabase
+    const updateData = {
+      ...updates,
+      updated_at: new Date().toISOString(),
+    };
+
+    // @ts-ignore - Supabase typing issue
+    const { data, error } = await (supabase
       .from('recurring_transactions')
-      .update({
-        ...updates,
-        updated_at: new Date().toISOString(),
-      })
+      // @ts-ignore
+      .update(updateData)
       .eq('id', transactionId)
-      .eq('user_id', userId)
+      .eq('user_id', userId) as any)
       .select()
       .single();
 
@@ -78,11 +84,13 @@ export async function deleteRecurringTransaction(
   transactionId: string
 ): Promise<ApiResponse<void>> {
   try {
-    const { error } = await supabase
+    // @ts-ignore - Supabase typing issue
+    const { error } = await (supabase
       .from('recurring_transactions')
+      // @ts-ignore
       .update({ deleted_at: new Date().toISOString() })
       .eq('id', transactionId)
-      .eq('user_id', userId);
+      .eq('user_id', userId) as any);
 
     if (error) throw error;
 

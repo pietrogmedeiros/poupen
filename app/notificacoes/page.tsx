@@ -46,7 +46,7 @@ export default function NotificacoesPage() {
   if (authLoading) {
     return (
       <div className="flex items-center justify-center h-96">
-        <Loader2 className="w-8 h-8 animate-spin text-gray-600 dark:text-gray-400" />
+        <Loader2 className="w-8 h-8 animate-spin text-[var(--text-secondary)]" />
       </div>
     );
   }
@@ -54,7 +54,7 @@ export default function NotificacoesPage() {
   if (!user) {
     return (
       <div className="flex items-center justify-center h-96">
-        <p className="text-gray-600 dark:text-gray-400">Faça login para continuar</p>
+        <p className="text-[var(--text-secondary)]">Faça login para continuar</p>
       </div>
     );
   }
@@ -65,15 +65,13 @@ export default function NotificacoesPage() {
 
   return (
     <div className="space-y-8">
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 via-blue-400 to-purple-400 flex items-center gap-3">
-            <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center">
-              <Bell className="w-6 h-6 text-white" />
-            </div>
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)] flex items-center gap-2">
+            <Bell className="w-6 h-6" />
             Notificações
           </h1>
-          <p className="text-slate-400 mt-3 text-lg">
+          <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
             {unreadCount > 0 ? `Você tem ${unreadCount} notificação${unreadCount !== 1 ? 's' : ''} não lida${unreadCount !== 1 ? 's' : ''}` : 'Você está atualizado!'}
           </p>
         </div>
@@ -83,20 +81,20 @@ export default function NotificacoesPage() {
       <div className="flex gap-3">
         <button
           onClick={() => setFilter('all')}
-          className={`px-4 py-2.5 rounded-lg font-medium transition-all ${
+          className={`px-5 py-2.5 rounded-lg font-medium transition-all ${
             filter === 'all'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
-              : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80'
+              ? 'bg-[var(--accent-primary)] hover:opacity-90 text-white'
+              : 'bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
           }`}
         >
           Todas ({notifications.length})
         </button>
         <button
           onClick={() => setFilter('unread')}
-          className={`px-4 py-2.5 rounded-lg font-medium transition-all ${
+          className={`px-5 py-2.5 rounded-lg font-medium transition-all ${
             filter === 'unread'
-              ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg'
-              : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80'
+              ? 'bg-[var(--accent-primary)] hover:opacity-90 text-white'
+              : 'bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
           }`}
         >
           Não lidas ({unreadCount})

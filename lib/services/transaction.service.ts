@@ -88,14 +88,16 @@ export async function createTransaction(
   transaction: Omit<Transaction, 'id' | 'user_id' | 'created_at' | 'updated_at' | 'deleted_at'>
 ): Promise<ApiResponse<Transaction>> {
   try {
-    const { data, error } = await supabase
+    const insertData = {
+      user_id: userId,
+      ...transaction,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    const { data, error } = await (supabase
       .from('transactions')
-      .insert({
-        user_id: userId,
-        ...transaction,
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString(),
-      })
+      .insert(insertData as any) as any)
       .select()
       .single();
 
@@ -114,14 +116,18 @@ export async function updateTransaction(
   updates: Partial<Omit<Transaction, 'id' | 'user_id' | 'created_at' | 'deleted_at'>>
 ): Promise<ApiResponse<Transaction>> {
   try {
-    const { data, error } = await supabase
+    const updateData = {
+      ...updates,
+      updated_at: new Date().toISOString(),
+    };
+
+    // @ts-ignore - Supabase typing issue
+    const { data, error } = await (supabase
       .from('transactions')
-      .update({
-        ...updates,
-        updated_at: new Date().toISOString(),
-      })
+      // @ts-ignore
+      .update(updateData)
       .eq('id', transactionId)
-      .eq('user_id', userId)
+      .eq('user_id', userId) as any)
       .select()
       .single();
 
@@ -139,11 +145,13 @@ export async function deleteTransaction(
   transactionId: string
 ): Promise<ApiResponse<void>> {
   try {
-    const { error } = await supabase
+    // @ts-ignore - Supabase typing issue
+    const { error } = await (supabase
       .from('transactions')
+      // @ts-ignore
       .update({ deleted_at: new Date().toISOString() })
       .eq('id', transactionId)
-      .eq('user_id', userId);
+      .eq('user_id', userId) as any);
 
     if (error) throw error;
 
@@ -165,30 +173,30 @@ export async function getMonthlyStats(
       .split('T')[0];
 
     // Usar agregação no banco de dados em vez de filtrar em memory
-    const { data: income, error: incomeError } = await supabase
+    const { data: income, error: incomeError } = await (supabase
       .from('transactions')
       .select('amount')
       .eq('user_id', userId)
       .eq('type', 'entrada')
       .gte('date', startDate)
       .lte('date', endDate)
-      .is('deleted_at', null);
+      .is('deleted_at', null) as any);
 
     if (incomeError) throw incomeError;
 
-    const { data: expenses, error: expensesError } = await supabase
+    const { data: expenses, error: expensesError } = await (supabase
       .from('transactions')
       .select('amount')
       .eq('user_id', userId)
       .eq('type', 'despesa')
       .gte('date', startDate)
       .lte('date', endDate)
-      .is('deleted_at', null);
+      .is('deleted_at', null) as any);
 
     if (expensesError) throw expensesError;
 
-    const totalIncome = (income || []).reduce((sum, t) => sum + (t.amount || 0), 0);
-    const totalExpenses = (expenses || []).reduce((sum, t) => sum + (t.amount || 0), 0);
+    const totalIncome = (income || []).reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
+    const totalExpenses = (expenses || []).reduce((sum: number, t: any) => sum + (t.amount || 0), 0);
 
     return createSuccessResponse({
       income: totalIncome,

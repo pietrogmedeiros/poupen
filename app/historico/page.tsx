@@ -19,7 +19,7 @@ import { useAuth } from '@/lib/auth-context';
 import { formatNumber } from '@/lib/format';
 import { useValueVisibility } from '@/lib/ValueVisibilityContext';
 import { MaskedValue } from '@/components/MaskedValue';
-import { gradients } from '@/lib/colorMap';
+
 
 export default function HistoricoPage() {
   const { user, loading: authLoading } = useAuth();
@@ -147,13 +147,10 @@ export default function HistoricoPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 
-            className="text-5xl font-bold text-transparent bg-clip-text"
-            style={{ backgroundImage: gradients.slate }}
-          >
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
             Histórico
           </h1>
-          <p className="text-slate-400 mt-3 text-lg">
+          <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
             Análise detalhada das suas finanças
           </p>
         </div>
@@ -161,20 +158,20 @@ export default function HistoricoPage() {
         <div className="flex gap-3">
           <button
             onClick={() => setPeriodo('mes')}
-            className={`px-6 py-2.5 rounded-lg transition-all duration-300 font-semibold text-sm ${
+            className={`px-5 py-2.5 rounded-lg transition-all font-medium text-sm ${
               periodo === 'mes'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/50'
-                : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80 hover:border-slate-600/50'
+                ? 'bg-[var(--accent-primary)] hover:opacity-90 text-white'
+                : 'bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
             }`}
           >
             Mês
           </button>
           <button
             onClick={() => setPeriodo('ano')}
-            className={`px-6 py-2.5 rounded-lg transition-all duration-300 font-semibold text-sm ${
+            className={`px-5 py-2.5 rounded-lg transition-all font-medium text-sm ${
               periodo === 'ano'
-                ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-lg shadow-blue-500/50'
-                : 'bg-slate-800/50 border border-slate-700/50 text-slate-300 hover:bg-slate-800/80 hover:border-slate-600/50'
+                ? 'bg-[var(--accent-primary)] hover:opacity-90 text-white'
+                : 'bg-[var(--bg-secondary)] border border-[var(--border-primary)] text-[var(--text-primary)] hover:bg-[var(--bg-hover)]'
             }`}
           >
             Ano

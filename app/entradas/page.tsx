@@ -7,7 +7,6 @@ import { useAuth } from '@/lib/auth-context';
 import { formatNumber } from '@/lib/format';
 import { useValueVisibility } from '@/lib/ValueVisibilityContext';
 import { MaskedValue } from '@/components/MaskedValue';
-import { gradients } from '@/lib/colorMap';
 import CategoryInput from '@/components/CategoryInput';
 
 export default function EntradasPage() {
@@ -114,49 +113,52 @@ export default function EntradasPage() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6 md:space-y-8">
+      {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 
-            className="text-5xl font-bold text-transparent bg-clip-text"
-            style={{ backgroundImage: gradients.slate }}
-          >
+          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
             Entradas
           </h1>
-          <p className="text-slate-400 mt-3 text-lg">
+          <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
             Gerencie suas receitas
           </p>
         </div>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center justify-center md:justify-start gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 font-semibold w-full md:w-auto"
+          className="flex items-center justify-center gap-2 bg-[var(--accent-primary)] hover:opacity-90 text-white px-5 py-2.5 rounded-lg transition-opacity font-medium text-sm md:text-base w-full md:w-auto"
         >
-          <Plus className="w-5 h-5" />
+          <Plus className="w-4 h-4 md:w-5 md:h-5" />
           Nova Entrada
         </button>
       </div>
 
       {/* Lista de Entradas */}
-      <div className="bg-white/5 backdrop-blur-xl rounded-2xl border border-slate-700/30 p-8 shadow-2xl hover:border-slate-700/50 transition-all">
+      <div className="bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg shadow-sm">
         {loading ? (
           <div className="flex items-center justify-center py-12">
-            <Loader2 className="w-6 h-6 animate-spin text-slate-400" />
+            <Loader2 className="w-6 h-6 animate-spin text-[var(--text-secondary)]" />
           </div>
         ) : entradas.length > 0 ? (
-          <div className="space-y-3">
-            {entradas.map((entrada) => (
-              <div key={entrada.id} className="flex items-center justify-between p-4 bg-slate-800/30 rounded-xl hover:bg-slate-800/60 transition-all border border-slate-700/30 hover:border-slate-700/60 group">
-                <div className="flex-1">
-                  <p className="font-semibold text-white group-hover:text-green-100 transition-colors">{entrada.description}</p>
-                  <div className="flex items-center gap-3 mt-1">
-                    <p className="text-sm text-slate-400">{entrada.category}</p>
-                    <p className="text-xs text-slate-500">
+          <div>
+            {entradas.map((entrada, index) => (
+              <div 
+                key={entrada.id}
+                className={`flex items-center justify-between p-4 md:p-5 ${
+                  index !== entradas.length - 1 ? 'border-b border-[var(--border-primary)]' : ''
+                } hover:bg-[var(--bg-hover)] transition-colors group`}
+              >
+                <div className="flex-1 min-w-0">
+                  <p className="font-medium text-[var(--text-primary)] truncate">{entrada.description}</p>
+                  <div className="flex items-center gap-3 mt-1 flex-wrap">
+                    <p className="text-xs md:text-sm text-[var(--text-secondary)]">{entrada.category}</p>
+                    <p className="text-xs text-[var(--text-tertiary)]">
                       {new Date(entrada.date).toLocaleDateString('pt-BR')}
                     </p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="text-lg font-bold text-green-400 flex items-center gap-2">
+                <div className="flex items-center gap-3 flex-shrink-0 ml-2">
+                  <div className="text-sm md:text-base font-bold text-[var(--status-success)]">
                     <MaskedValue
                       value={`+R$ ${formatNumber(parseFloat(entrada.amount))}`}
                       isVisible={isValuesVisible}
@@ -166,7 +168,7 @@ export default function EntradasPage() {
                   <button
                     onClick={() => handleDelete(entrada.id)}
                     disabled={deleting === entrada.id}
-                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-red-400 hover:bg-red-500/10 rounded-lg disabled:opacity-50"
+                    className="opacity-0 group-hover:opacity-100 transition-opacity p-2 text-[var(--status-error)] hover:bg-[var(--status-error)]/10 rounded-lg disabled:opacity-50"
                   >
                     {deleting === entrada.id ? (
                       <Loader2 className="w-4 h-4 animate-spin" />
@@ -179,11 +181,8 @@ export default function EntradasPage() {
             ))}
           </div>
         ) : (
-          <div className="flex flex-col items-center justify-center py-12 text-gray-500 dark:text-gray-400">
-            <svg className="w-16 h-16 opacity-50 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 6v6m0 0v6m0-6h6m0 0h6m-6-6H6m0 0H0" />
-            </svg>
-            <p>Nenhuma entrada registrada ainda</p>
+          <div className="flex flex-col items-center justify-center py-12 px-4">
+            <p className="text-[var(--text-secondary)] text-sm">Nenhuma entrada registrada ainda</p>
           </div>
         )}
       </div>
@@ -191,22 +190,22 @@ export default function EntradasPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-white dark:bg-gray-800 rounded-2xl w-full max-w-md p-6 md:p-8 shadow-2xl border border-gray-200 dark:border-gray-700 max-h-[90vh] overflow-y-auto">
+          <div className="bg-[var(--bg-primary)] rounded-lg w-full max-w-md p-6 shadow-lg border border-[var(--border-primary)] max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+              <h2 className="text-xl font-bold text-[var(--text-primary)]">
                 Nova Entrada
               </h2>
               <button
                 onClick={() => setShowModal(false)}
-                className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
+                className="text-[var(--text-secondary)] hover:text-[var(--text-primary)]"
               >
-                <X className="w-6 h-6" />
+                <X className="w-5 h-5" />
               </button>
             </div>
             
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                   Valor
                 </label>
                 <input
@@ -215,7 +214,7 @@ export default function EntradasPage() {
                   required
                   value={formData.amount}
                   onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[var(--border-primary)] rounded-lg bg-[var(--bg-secondary)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none focus:border-[var(--accent-primary)]"
                   placeholder="0.00"
                 />
               </div>
@@ -229,11 +228,11 @@ export default function EntradasPage() {
                   required
                 />
               ) : (
-                <div className="text-sm text-gray-500 dark:text-gray-400">Carregando categorias...</div>
+                <div className="text-sm text-[var(--text-secondary)]">Carregando categorias...</div>
               )}
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                   Descrição
                 </label>
                 <input
@@ -241,13 +240,13 @@ export default function EntradasPage() {
                   required
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-gray-500 focus:border-transparent"
-                  placeholder="Ex: Salário de Dezembro"
+                  className="w-full px-3 py-2 border border-[var(--border-primary)] rounded-lg bg-[var(--bg-secondary)] text-[var(--text-primary)] placeholder-[var(--text-tertiary)] focus:outline-none focus:border-[var(--accent-primary)]"
+                  placeholder="Ex: Salário"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                   Data
                 </label>
                 <input
@@ -255,19 +254,19 @@ export default function EntradasPage() {
                   required
                   value={formData.date}
                   onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-gray-500 focus:border-transparent"
+                  className="w-full px-3 py-2 border border-[var(--border-primary)] rounded-lg bg-[var(--bg-secondary)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]"
                 />
               </div>
 
-              <div className="col-span-2">
+              <div>
                 <label className="flex items-center gap-2 cursor-pointer">
                   <input
                     type="checkbox"
                     checked={formData.isRecurring}
                     onChange={(e) => setFormData({ ...formData, isRecurring: e.target.checked })}
-                    className="w-4 h-4 rounded border-gray-300 dark:border-gray-600"
+                    className="w-4 h-4 rounded"
                   />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <span className="text-sm font-medium text-[var(--text-primary)]">
                     Tornar recorrente
                   </span>
                 </label>
@@ -275,13 +274,13 @@ export default function EntradasPage() {
 
               {formData.isRecurring && (
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                  <label className="block text-sm font-medium text-[var(--text-primary)] mb-2">
                     Frequência
                   </label>
                   <select
                     value={formData.frequency}
                     onChange={(e) => setFormData({ ...formData, frequency: e.target.value })}
-                    className="w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-gray-500"
+                    className="w-full px-3 py-2 border border-[var(--border-primary)] rounded-lg bg-[var(--bg-secondary)] text-[var(--text-primary)] focus:outline-none focus:border-[var(--accent-primary)]"
                   >
                     <option value="daily">Diariamente</option>
                     <option value="weekly">Semanalmente</option>
@@ -293,17 +292,17 @@ export default function EntradasPage() {
                 </div>
               )}
 
-              <div className="flex gap-3 pt-4 col-span-2">
+              <div className="flex gap-3 pt-4">
                 <button
                   type="button"
                   onClick={() => setShowModal(false)}
-                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors font-medium"
+                  className="flex-1 px-4 py-2 border border-[var(--border-primary)] rounded-lg text-[var(--text-primary)] hover:bg-[var(--bg-hover)] transition-colors font-medium text-sm"
                 >
                   Cancelar
                 </button>
                 <button
                   type="submit"
-                  className="flex-1 px-4 py-2 bg-gray-700 hover:bg-gray-800 text-white rounded-lg transition-colors font-medium"
+                  className="flex-1 px-4 py-2 bg-[var(--accent-primary)] text-white rounded-lg hover:opacity-90 transition-opacity font-medium text-sm"
                 >
                   Adicionar
                 </button>

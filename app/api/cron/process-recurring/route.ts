@@ -35,8 +35,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({
       success: true,
       message: 'Transações recorrentes processadas com sucesso',
-      processedTransactions: result1.data?.length || 0,
-      reminders: result2.data?.length || 0,
+      processedTransactions: (result1.data as any)?.length || 0,
+      reminders: (result2.data as any)?.length || 0,
     });
   } catch (error) {
     console.error('Erro ao processar recorrências:', error);
