@@ -93,8 +93,8 @@ export default async function RankingPage() {
                 O ranking é atualizado diariamente. Enquanto isso, veja a posição de outros usuários abaixo.
               </p>
             </div>
-          ) : rankings.length > 0 ? (
-            // Demo mode - mostrar exemplo dos componentes para não-autenticados
+          ) : rankings.length > 0 && !user?.id ? (
+            // Demo mode - mostrar exemplo dos componentes APENAS para não-autenticados
             <div className="mb-12">
               <div className="rounded-lg border border-amber-500/50 bg-amber-500/10 p-4 mb-6">
                 <p className="text-sm text-amber-300">
