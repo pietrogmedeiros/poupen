@@ -47,7 +47,7 @@ export function BadgeDisplay({
 
   return (
     <div
-      className={`inline-flex items-center rounded-full dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white dark:border-slate-700/50 light:border-gray-300 light:shadow-sm backdrop-blur-sm ${sizeClasses[size]} ${glowClasses} ${animationClasses}`}
+      className={`inline-flex items-center rounded-full dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 dark:border-slate-700/50 backdrop-blur-sm ${sizeClasses[size]} ${glowClasses} ${animationClasses}`}
       style={{
         boxShadow: glowEffect
           ? `0 0 20px ${badgeData.color}40, inset 0 0 20px ${badgeData.color}10`
@@ -58,7 +58,7 @@ export function BadgeDisplay({
       <span className={iconSizes[size]}>{badgeData.icon}</span>
       {showLabel && (
         <span
-          className={`font-semibold dark:text-white light:text-gray-900`}
+          className={`font-semibold dark:text-white`}
           style={{
             color: badgeData.color,
             textShadow: `0 0 10px ${badgeData.color}40`,
@@ -104,7 +104,7 @@ export function BadgeGroup({
       ))}
       {remainingCount > 0 && (
         <div
-          className={`inline-flex items-center rounded-full dark:bg-slate-900/50 light:bg-gray-100 dark:border-slate-700/50 light:border-gray-300 px-3 py-1.5 text-sm font-semibold dark:text-slate-300 light:text-gray-700 dark:hover:text-white light:hover:text-gray-900 transition-colors`}
+          className={`inline-flex items-center rounded-full dark:bg-slate-900/50 dark:border-slate-700/50 px-3 py-1.5 text-sm font-semibold dark:text-slate-300 dark:hover:text-white transition-colors`}
         >
           +{remainingCount}
         </div>

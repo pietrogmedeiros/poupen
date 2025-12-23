@@ -44,7 +44,7 @@ export function StreakDisplay({
 
   return (
     <div
-      className={`rounded-lg border border-red-500/30 dark:bg-gradient-to-r dark:from-red-500/10 dark:to-orange-500/10 light:bg-white light:shadow-sm backdrop-blur-sm ${sizeClasses[size]} ${className}`}
+      className={`rounded-lg border border-red-500/30 dark:bg-gradient-to-r dark:from-red-500/10 dark:to-orange-500/10 backdrop-blur-sm ${sizeClasses[size]} ${className}`}
     >
       {/* Header */}
       <div className="flex items-center justify-between">
@@ -78,7 +78,7 @@ export function StreakDisplay({
         </div>
 
         {/* Bar Background */}
-        <div className={`w-full rounded-full dark:bg-slate-900/50 light:bg-gray-200 dark:border-slate-700/50 light:border-gray-300 border overflow-hidden ${barHeight[size]}`}>
+        <div className={`w-full rounded-full dark:bg-slate-900/50 dark:border-slate-700/50 border overflow-hidden ${barHeight[size]}`}>
           {/* Bar Fill */}
           <div
             className="h-full bg-gradient-to-r from-red-500 to-orange-500 rounded-full transition-all duration-800 ease-out"
@@ -89,7 +89,7 @@ export function StreakDisplay({
 
       {/* Milestones */}
       {validStreak > 0 && (
-        <div className={`mt-3 pt-3 dark:border-slate-700/30 light:border-gray-300 border-t space-y-2`}>
+        <div className={`mt-3 pt-3 dark:border-slate-700/30 border-t space-y-2`}>
           <div className={`text-xs ${themeClasses.text.secondary}`}>
             {validStreak === 1 && (
               <p>Ótimo! Você começou sua jornada de economia!</p>
@@ -136,7 +136,7 @@ export function StreakGrid({ streak = 0, className = '' }: StreakGridProps) {
 
   return (
     <div
-      className={`rounded-lg dark:border-slate-700/50 light:border-gray-300 border dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm backdrop-blur-sm p-4 ${className}`}
+      className={`rounded-lg dark:border-slate-700/50 border dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm p-4 ${className}`}
     >
       <p className={`mb-4 text-sm font-semibold ${themeClasses.text.primary}`}>Últimos 12 Meses</p>
 
@@ -147,13 +147,13 @@ export function StreakGrid({ streak = 0, className = '' }: StreakGridProps) {
             className={`aspect-square rounded-lg border transition-all ${
               month <= validStreak
                 ? 'bg-gradient-to-br from-orange-500/50 to-orange-600/50 border-orange-500/50'
-                : 'dark:bg-slate-800/50 light:bg-gray-100 dark:border-slate-700/50 light:border-gray-300'
+                : 'dark:bg-slate-800/50 dark:border-slate-700/50'
             }`}
             style={{ animation: `fadeIn 0.5s ease-out ${month * 0.05}s both` }}
             title={month <= validStreak ? `Mês ${month} - Economizando` : `Mês ${month}`}
           >
             <div className="flex h-full items-center justify-center text-center">
-              <span className={`text-lg font-bold ${month <= validStreak ? 'text-white' : 'dark:text-slate-500 light:text-gray-500'}`}>
+              <span className={`text-lg font-bold ${month <= validStreak ? 'text-white' : 'dark:text-slate-500'}`}>
                 {month <= validStreak ? '✓' : '—'}
               </span>
             </div>
@@ -168,7 +168,7 @@ export function StreakGrid({ streak = 0, className = '' }: StreakGridProps) {
           <span>Mês com economia</span>
         </div>
         <div className="flex items-center gap-2">
-          <span className={`inline-flex h-4 w-4 items-center justify-center rounded dark:bg-slate-700 light:bg-gray-300 text-xs`}>—</span>
+          <span className={`inline-flex h-4 w-4 items-center justify-center rounded dark:bg-slate-700 text-xs`}>—</span>
           <span>Sem economia</span>
         </div>
       </div>

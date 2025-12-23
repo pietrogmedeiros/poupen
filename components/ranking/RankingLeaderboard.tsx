@@ -52,7 +52,7 @@ export function RankingLeaderboard({
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
       {/* Header */}
-      <div className={`sticky top-0 z-10 rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm backdrop-blur-sm px-4 py-3`}>
+      <div className={`sticky top-0 z-10 rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm px-4 py-3`}>
         <h2 className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
           Poupen Ranking
         </h2>
@@ -63,14 +63,14 @@ export function RankingLeaderboard({
 
       {/* Error Message */}
       {error && (
-        <div className="rounded-lg border border-red-500/30 dark:bg-red-500/10 light:bg-red-50 px-4 py-3 text-sm text-red-400">
+        <div className="rounded-lg border border-red-500/30 dark:bg-red-500/10 px-4 py-3 text-sm text-red-400">
           Erro: {error}
         </div>
       )}
 
       {/* User Ranking Card (if available) */}
       {showUserRanking && userRanking && (
-        <div className={`rounded-lg border-2 border-emerald-500/30 dark:bg-gradient-to-r dark:from-emerald-500/10 dark:to-cyan-500/10 light:bg-white light:shadow-sm p-4`}>
+        <div className={`rounded-lg border-2 border-emerald-500/30 dark:bg-gradient-to-r dark:from-emerald-500/10 dark:to-cyan-500/10 p-4`}>
           <p className={`text-xs text-emerald-400 font-semibold mb-3 uppercase tracking-wider`}>
             Sua Posição no Ranking
           </p>
@@ -93,7 +93,7 @@ export function RankingLeaderboard({
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton
                 key={i}
-                className="h-20 rounded-lg dark:bg-slate-800/50 light:bg-gray-200"
+                className="h-20 rounded-lg dark:bg-slate-800/50"
               />
             ))}
           </>
@@ -102,7 +102,7 @@ export function RankingLeaderboard({
           <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
             <p className="text-3xl">🏆</p>
             <p className={`${themeClasses.text.secondary}`}>Nenhum ranking disponível</p>
-            <p className={`text-xs dark:text-slate-500 light:text-gray-500`}>
+            <p className={`text-xs dark:text-slate-500`}>
               Os rankings estarão disponíveis após o próximo cálculo
             </p>
           </div>
@@ -132,7 +132,7 @@ export function RankingLeaderboard({
 
       {/* Footer Info */}
       {rankings.length > 0 && (
-        <div className={`text-center text-xs dark:text-slate-500 light:text-gray-500`}>
+        <div className={`text-center text-xs dark:text-slate-500`}>
           Exibindo {rankings.length} de {rankings.length + (hasMore ? '+' : '')}{' '}
           rankings
         </div>

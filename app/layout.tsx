@@ -34,17 +34,17 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased dark:bg-slate-950 light:bg-white transition-colors duration-200`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased transition-colors duration-200`}
       >
         <ThemeProvider>
           <AuthProvider>
             <ValueVisibilityProvider>
               <NotificationHandler>
                 <MobileNav />
-                <div className="flex min-h-screen dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 light:bg-gradient-to-br light:from-white light:via-gray-50 light:to-gray-100 flex-col md:flex-row">
+                <div className="flex min-h-screen flex-col md:flex-row" style={{background: 'var(--bg-primary)'}}>
                   <Sidebar />
                   <main className="flex-1 md:ml-20 mt-16 md:mt-0">
-                    <div className="min-h-screen p-4 md:p-8 dark:bg-gradient-to-br dark:from-slate-950 dark:via-slate-900/50 dark:to-slate-950 light:bg-gradient-to-br light:from-white light:via-gray-50/50 light:to-gray-100 transition-colors duration-200">
+                    <div className="min-h-screen p-4 md:p-8 transition-colors duration-200" style={{background: 'var(--bg-primary)'}}>
                       <div className="max-w-7xl mx-auto">
                         {children}
                       </div>

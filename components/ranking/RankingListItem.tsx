@@ -61,14 +61,14 @@ export function RankingListItem({
     <Link href={`/ranking/${ranking.users.username}`}>
       <div
         onClick={() => onClick?.(ranking)}
-        className={`group relative w-full rounded-lg border dark:bg-gradient-to-r light:bg-white ${getRankMedalColor(ranking.posicao)} backdrop-blur-sm transition-all duration-300 cursor-pointer
-          ${animated ? 'dark:hover:shadow-lg light:hover:shadow-md hover:scale-102' : ''}
-          ${isUserRanking ? 'ring-2 ring-emerald-500/50 dark:ring-offset-slate-950 light:ring-offset-white ring-offset-1' : ''}
+        className={`group relative w-full rounded-lg border dark:bg-gradient-to-r ${getRankMedalColor(ranking.posicao)} backdrop-blur-sm transition-all duration-300 cursor-pointer
+          ${animated ? 'dark:hover:shadow-lg hover:scale-102' : ''}
+          ${isUserRanking ? 'ring-2 ring-emerald-500/50 dark:ring-offset-slate-950 ring-offset-1' : ''}
           ${isTop3 ? 'border-2' : 'border'}`}
       >
         <div className="flex items-center gap-4 p-4">
           {/* Position / Medal */}
-          <div className={`flex h-12 w-12 items-center justify-center rounded-full dark:bg-slate-900/50 light:bg-gray-100 dark:text-white light:text-gray-900 text-xl font-bold`}>
+          <div className={`flex h-12 w-12 items-center justify-center rounded-full dark:bg-slate-900/50 dark:text-white text-xl font-bold`}>
             {medal ? (
               <span className="text-2xl">{medal}</span>
             ) : (
@@ -107,7 +107,7 @@ export function RankingListItem({
 
         {/* Badges */}
         {ranking.badges && ranking.badges.length > 0 && (
-          <div className={`border-t dark:border-slate-700/30 light:border-gray-300 px-4 py-3`}>
+          <div className={`border-t dark:border-slate-700/30 px-4 py-3`}>
             <BadgeGroup
               badges={ranking.badges as any}
               size="sm"

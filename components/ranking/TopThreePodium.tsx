@@ -34,7 +34,7 @@ export function TopThreePodium({
   if (podiumOrder.length === 0) {
     return (
       <div
-        className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm backdrop-blur-sm px-6 py-8 text-center ${className}`}
+        className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm px-6 py-8 text-center ${className}`}
       >
         <p className={`${themeClasses.text.secondary}`}>Ranking ainda não disponível</p>
       </div>
@@ -43,7 +43,7 @@ export function TopThreePodium({
 
   return (
     <div
-      className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm backdrop-blur-sm p-6 ${className}`}
+      className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm p-6 ${className}`}
     >
       {/* Title */}
       <h3 className={`mb-8 text-center text-lg font-bold ${themeClasses.text.primary}`}>
@@ -83,7 +83,7 @@ export function TopThreePodium({
                   className={`relative w-20 rounded-t-lg border-2 bg-gradient-to-r ${podiumBg} transition-all duration-300 group-hover:shadow-lg ${podiumHeight}`}
                 >
                   {/* Position Number */}
-                  <div className="absolute -top-6 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 light:bg-white dark:border-slate-700 light:border-gray-300 dark:text-white light:text-gray-900 text-lg font-bold">
+                  <div className="absolute -top-6 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full dark:bg-gradient-to-br dark:from-slate-900 dark:to-slate-950 dark:border-slate-700 dark:text-white text-lg font-bold">
                     #{position}
                   </div>
 
@@ -108,7 +108,7 @@ export function TopThreePodium({
                 </div>
 
                 {/* Taxa */}
-                <div className={`w-full rounded-lg dark:bg-slate-900/50 light:bg-gray-50 ${themeClasses.border.primary} px-2 py-1 text-center`}>
+                <div className={`w-full rounded-lg dark:bg-slate-900/50 ${themeClasses.border.primary} px-2 py-1 text-center`}>
                   <p className={`text-xs ${themeClasses.text.secondary}`}>Taxa</p>
                   <p className="text-sm font-bold text-orange-500">
                     {formatEconomia(ranking.economia_taxa)}

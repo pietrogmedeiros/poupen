@@ -43,7 +43,7 @@ export function RankHistoryChart({
 
   if (!chartData || chartData.sorted.length === 0) {
     return (
-      <div className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm backdrop-blur-sm p-6 ${className}`}>
+      <div className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm p-6 ${className}`}>
         <h3 className={`mb-4 text-lg font-bold ${themeClasses.text.primary}`}>📈 Histórico de Ranking</h3>
         <p className={`${themeClasses.text.secondary} text-center py-8`}>
           Dados históricos aparecerão aqui quando você tiver múltiplos períodos de ranking.
@@ -67,7 +67,7 @@ export function RankHistoryChart({
   };
 
   return (
-    <div className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm backdrop-blur-sm p-6 ${className}`}>
+    <div className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 backdrop-blur-sm p-6 ${className}`}>
       <h3 className={`mb-6 text-lg font-bold ${themeClasses.text.primary}`}>📈 Histórico de Ranking</h3>
 
       <div className="space-y-8">
@@ -94,7 +94,7 @@ export function RankHistoryChart({
                   <span className={`text-xs ${themeClasses.text.secondary} text-center truncate max-w-full w-full px-1`}>
                     {data.month}
                   </span>
-                  <span className={`text-xs font-bold dark:text-slate-300 light:text-gray-700 dark:group-hover:text-white light:group-hover:text-gray-900 transition-colors`}>
+                  <span className={`text-xs font-bold dark:text-slate-300 dark:group-hover:text-white transition-colors`}>
                     #{data.posicao}
                   </span>
                 </div>
@@ -126,7 +126,7 @@ export function RankHistoryChart({
                   <span className={`text-xs ${themeClasses.text.secondary} text-center truncate max-w-full w-full px-1`}>
                     {data.month}
                   </span>
-                  <span className={`text-xs font-bold dark:text-slate-300 light:text-gray-700 dark:group-hover:text-white light:group-hover:text-gray-900 transition-colors`}>
+                  <span className={`text-xs font-bold dark:text-slate-300 dark:group-hover:text-white transition-colors`}>
                     {data.economia_taxa.toFixed(0)}%
                   </span>
                 </div>
@@ -136,29 +136,29 @@ export function RankHistoryChart({
         </div>
 
         {/* Stats de Evolução */}
-        <div className={`grid grid-cols-2 gap-4 pt-4 dark:border-slate-700/50 light:border-gray-300 border-t`}>
-          <div className={`rounded-lg dark:border-slate-700/30 light:border-gray-300 dark:bg-slate-900/30 light:bg-gray-50 border p-3`}>
+        <div className={`grid grid-cols-2 gap-4 pt-4 dark:border-slate-700/50 border-t`}>
+          <div className={`rounded-lg dark:border-slate-700/30 dark:bg-slate-900/30 border p-3`}>
             <p className={`text-xs ${themeClasses.text.secondary} mb-1`}>Melhor Posição</p>
             <p className="text-2xl font-bold text-emerald-400">
               #{Math.min(...chartData.sorted.map((d) => d.posicao))}
             </p>
           </div>
 
-          <div className={`rounded-lg dark:border-slate-700/30 light:border-gray-300 dark:bg-slate-900/30 light:bg-gray-50 border p-3`}>
+          <div className={`rounded-lg dark:border-slate-700/30 dark:bg-slate-900/30 border p-3`}>
             <p className={`text-xs ${themeClasses.text.secondary} mb-1`}>Melhor Taxa</p>
             <p className="text-2xl font-bold text-cyan-400">
               {Math.max(...chartData.sorted.map((d) => d.economia_taxa)).toFixed(1)}%
             </p>
           </div>
 
-          <div className={`rounded-lg dark:border-slate-700/30 light:border-gray-300 dark:bg-slate-900/30 light:bg-gray-50 border p-3`}>
+          <div className={`rounded-lg dark:border-slate-700/30 dark:bg-slate-900/30 border p-3`}>
             <p className={`text-xs ${themeClasses.text.secondary} mb-1`}>Períodos Registrados</p>
             <p className="text-2xl font-bold text-purple-400">
               {chartData.sorted.length}
             </p>
           </div>
 
-          <div className={`rounded-lg dark:border-slate-700/30 light:border-gray-300 dark:bg-slate-900/30 light:bg-gray-50 border p-3`}>
+          <div className={`rounded-lg dark:border-slate-700/30 dark:bg-slate-900/30 border p-3`}>
             <p className={`text-xs ${themeClasses.text.secondary} mb-1`}>Média de Taxa</p>
             <p className="text-2xl font-bold text-yellow-400">
               {(
