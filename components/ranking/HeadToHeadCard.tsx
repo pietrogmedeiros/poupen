@@ -5,6 +5,7 @@ import { RankingWithUser } from '@/lib/types/ranking';
 import { formatEconomia } from '@/lib/ranking';
 import { Avatar } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
+import { themeClasses } from '@/lib/theme-classes';
 
 interface HeadToHeadCardProps {
   userRanking: RankingWithUser;
@@ -52,18 +53,18 @@ export function HeadToHeadCard({
   const progressPercent = Math.max(0, Math.min(100, ((userTaxa / rivalTaxa) * 50) + 25));
 
   return (
-    <div className={`rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm p-6 ${className}`}>
-      <h3 className="mb-4 text-lg font-bold text-white">⚔️ Duelo Direto</h3>
+    <div className={`rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm dark:backdrop-blur-sm p-6 ${className}`}>
+      <h3 className="mb-4 text-lg font-bold dark:text-white light:text-gray-900">⚔️ Duelo Direto</h3>
 
       {/* Seletor de Rival */}
       <div className="mb-6">
-        <label className="text-xs text-slate-400 uppercase tracking-wider mb-2 block">
+        <label className="text-xs dark:text-slate-400 light:text-gray-500 uppercase tracking-wider mb-2 block">
           Escolha um Rival
         </label>
         <select
           value={selectedRivalId || ''}
           onChange={(e) => setSelectedRivalId(e.target.value)}
-          className="w-full rounded-lg border border-slate-700 bg-slate-900/50 px-4 py-2 text-white text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all"
+          className={`w-full rounded-lg ${themeClasses.border.primary} ${themeClasses.input} px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-emerald-500/50 transition-all`}
         >
           <option value="">Selecione um rival...</option>
           {rivals.map((rival) => (
