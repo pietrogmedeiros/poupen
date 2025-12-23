@@ -1,0 +1,136 @@
+'use client';
+
+import React from 'react';
+import Link from 'next/link';
+import { RankingWithUser } from '@/lib/types/ranking';
+import { formatEconomia } from '@/lib/ranking';
+import { BadgeGroup } from './BadgeDisplay';
+import { Avatar } from '@/components/ui/avatar';
+
+interface TopThreePodiumProps {
+  rankings: RankingWithUser[];
+  className?: string;
+}
+
+/**
+ * TopThreePodium - Exibe os 3 primeiros colocados com animação de podium
+ * Componente seguro com validação rigorosa de tipos
+ */
+export function TopThreePodium({
+  rankings,
+  className = '',
+}: TopThreePodiumProps) {
+  // Garantir que temos exatamente os 3 primeiros
+  const topThree = rankings.filter((r) => r.posicao >= 1 && r.posicao <= 3);
+
+  // Reordenar para 2 (prata), 1 (ouro), 3 (bronze) - layout visual
+  const podiumOrder = [
+    topThree.find((r) => r.posicao === 2),
+    topThree.find((r) => r.posicao === 1),
+    topThree.find((r) => r.posicao === 3),
+  ].filter((r): r is RankingWithUser => r !== undefined);
+
+  if (podiumOrder.length === 0) {
+    return (
+      <div
+        className={`rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm px-6 py-8 text-center ${className}`}
+      >
+        <p className="text-slate-400">🏆 Ranking ainda não disponível</p>
+      </div>
+    );
+  }
+
+  return (
+    <div
+      className={`rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm p-6 ${className}`}
+    >
+      {/* Title */}
+      <h3 className="mb-8 text-center text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+        🏆 Top 3 do Mês
+      </h3>
+
+      {/* Podium Container */}
+      <div className="flex items-flex-end justify-center gap-4">
+        {podiumOrder.map((ranking, index) => {
+          const position = ranking.posicao;
+          const medal = position === 1 ? '🥇' : position === 2 ? '🥈' : '🥉';
+          const podiumHeight = position === 1 ? 'h-40' : position === 2 ? 'h-32' : 'h-24';
+          const podiumBg =
+            position === 1
+              ? 'from-yellow-500/20 to-yellow-600/20 border-yellow-500/50'
+              : position === 2
+                ? 'from-slate-400/20 to-slate-500/20 border-slate-400/50'
+                : 'from-orange-500/20 to-orange-600/20 border-orange-500/50';
+
+          const userName = ranking.users.name || 'User';
+          const initialsFromName = userName
+            .split(' ')
+            .map((n) => n[0])
+            .join('')
+            .toUpperCase();
+
+          return (
+            <Link key={ranking.id} href={`/ranking/${ranking.users.username}`}>
+              <div className="flex flex-col items-center gap-3 group cursor-pointer">
+                {/* Rank Medal */}
+                <div className="text-4xl animate-bounce" style={{animationDelay: `${index * 0.1}s`}}>
+                  {medal}
+                </div>
+
+                {/* Podium */}
+                <div
+                  className={`relative w-20 rounded-t-lg border-2 bg-gradient-to-r ${podiumBg} transition-all duration-300 group-hover:shadow-lg ${podiumHeight}`}
+                >
+                  {/* Position Number */}
+                  <div className="absolute -top-6 left-1/2 flex h-10 w-10 -translate-x-1/2 items-center justify-center rounded-full bg-gradient-to-br from-slate-900 to-slate-950 border border-slate-700 text-lg font-bold">
+                    #{position}
+                  </div>
+
+                  {/* Inside Podium - User Avatar */}
+                  <div className="flex flex-col items-center justify-center h-full gap-2 px-2 py-3">
+                    <Avatar
+                      src={ranking.users.avatar_url ?? undefined}
+                      initials={initialsFromName}
+                      size="sm"
+                    />
+                  </div>
+                </div>
+
+                {/* User Info */}
+                <div className="w-full text-center">
+                  <p className="text-sm font-semibold text-white truncate max-w-[120px]">
+                    {userName}
+                  </p>
+                  <p className="text-xs text-slate-400 truncate max-w-[120px]">
+                    @{ranking.users.username || 'user'}
+                  </p>
+                </div>
+
+                {/* Taxa */}
+                <div className="w-full rounded-lg bg-slate-900/50 px-2 py-1 text-center border border-slate-700/50">
+                  <p className="text-xs text-slate-400">Taxa</p>
+                  <p className="text-sm font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
+                    {formatEconomia(ranking.economia_taxa)}
+                  </p>
+                </div>
+
+                {/* Badges */}
+                {ranking.badges && ranking.badges.length > 0 && (
+                  <div className="w-full">
+                    <BadgeGroup
+                      badges={ranking.badges as any}
+                      size="sm"
+                      showLabel={false}
+                      maxDisplay={3}
+                      className="justify-center"
+                    />
+                  </div>
+                )}
+              </div>
+            </Link>
+          );
+        })}
+      </div>
+    </div>
+  );
+}

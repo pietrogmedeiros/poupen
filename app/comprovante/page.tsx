@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { Camera, Upload, Loader2, CheckCircle, X } from 'lucide-react';
 import { createTransaction } from '@/lib/supabase-queries';
 import { useAuth } from '@/lib/auth-context';
+import { triggerRankingRecalculation } from '@/lib/ranking-auto-calculate';
 
 import CategoryInput from '@/components/CategoryInput';
 
@@ -104,6 +105,10 @@ export default function ComprovantePage() {
 
       if (result.success) {
         alert('Despesa salva com sucesso!');
+        
+        // Trigger ranking recalculation in background
+        triggerRankingRecalculation();
+        
         setSelectedImage(null);
         setSelectedFile(null);
         setResult(null);
@@ -125,7 +130,7 @@ export default function ComprovantePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-cyan-400 to-blue-500 bg-clip-text text-transparent">
           Comprovante
         </h1>
         <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
@@ -135,7 +140,7 @@ export default function ComprovantePage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Upload de Imagem */}
-        <div className="bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg p-6 shadow-sm">
+        <div className="bg-[var(--bg-secondary)] border border-cyan-500/30 rounded-lg p-6 shadow-sm">
           <h2 className="text-2xl font-bold text-[var(--text-primary)] mb-6">
             {selectedImage ? 'Imagem Selecionada' : 'Selecionar Imagem'}
           </h2>
@@ -213,7 +218,7 @@ export default function ComprovantePage() {
 
         {/* Formulário de Despesa */}
         {result && (
-          <div className="bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg p-6 shadow-sm">
+          <div className="bg-[var(--bg-secondary)] border border-cyan-500/30 rounded-lg p-6 shadow-sm">
             <div className="mb-6">
               {result.amount ? (
                 <div className="flex items-center gap-2 text-[var(--status-success)] bg-[var(--status-success)]/10 p-3 rounded-lg mb-4 border border-[var(--status-success)]/20">

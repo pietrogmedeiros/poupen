@@ -165,7 +165,7 @@ export default function RecorridosPage() {
     <div className="space-y-6 md:space-y-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-amber-400 to-yellow-500 bg-clip-text text-transparent">
             Recorridos
           </h1>
           <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
@@ -198,7 +198,7 @@ export default function RecorridosPage() {
 
       {/* Formulário */}
       {showForm && (
-        <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+        <div className="bg-[var(--bg-secondary)] border border-amber-500/30 rounded-lg p-6 shadow-sm">
           <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
             {editingId ? 'Editar Recorrência' : 'Nova Recorrência'}
           </h2>
@@ -342,7 +342,7 @@ export default function RecorridosPage() {
       )}
 
       {/* Lista de Recorrências */}
-      <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-md border border-gray-200 dark:border-gray-700">
+      <div className="bg-[var(--bg-secondary)] border border-amber-500/30 rounded-lg p-6 shadow-sm">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-8 h-8 animate-spin text-gray-600 dark:text-gray-400" />

@@ -6,6 +6,7 @@ import { fetchTransactions, createTransaction, deleteTransaction, createRecurrin
 import { useAuth } from '@/lib/auth-context';
 import { formatNumber } from '@/lib/format';
 import { useValueVisibility } from '@/lib/ValueVisibilityContext';
+import { triggerRankingRecalculation } from '@/lib/ranking-auto-calculate';
 import { MaskedValue } from '@/components/MaskedValue';
 import CategoryInput from '@/components/CategoryInput';
 
@@ -86,6 +87,9 @@ export default function DespesasPage() {
           frequency: 'monthly',
         });
         await loadDespesas();
+        
+        // Trigger ranking recalculation in background
+        triggerRankingRecalculation();
       }
     } catch (error) {
       console.error('Erro ao criar despesa:', error);
@@ -117,7 +121,7 @@ export default function DespesasPage() {
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-red-400 to-orange-500 bg-clip-text text-transparent">
             Despesas
           </h1>
           <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
@@ -134,7 +138,7 @@ export default function DespesasPage() {
       </div>
 
       {/* Lista de Despesas */}
-      <div className="bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg shadow-sm">
+      <div className="bg-[var(--bg-secondary)] border border-red-500/30 rounded-lg shadow-sm">
         {loading ? (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="w-6 h-6 animate-spin text-[var(--text-secondary)]" />
@@ -190,7 +194,7 @@ export default function DespesasPage() {
       {/* Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-          <div className="bg-[var(--bg-primary)] rounded-lg w-full max-w-md p-6 shadow-lg border border-[var(--border-primary)] max-h-[90vh] overflow-y-auto">
+          <div className="bg-[var(--bg-primary)] rounded-lg w-full max-w-md p-6 shadow-lg border border-red-500/30 max-h-[90vh] overflow-y-auto">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-[var(--text-primary)]">
                 Nova Despesa

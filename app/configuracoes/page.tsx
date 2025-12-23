@@ -196,7 +196,7 @@ export default function ConfiguracoesPage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-slate-400 to-slate-500 bg-clip-text text-transparent">
           Configurações
         </h1>
         <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">
@@ -215,7 +215,7 @@ export default function ConfiguracoesPage() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div className="lg:col-span-1">
-          <div className="bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg p-6 shadow-sm space-y-6">
+          <div className="bg-[var(--bg-secondary)] border border-slate-500/30 rounded-lg p-6 shadow-sm space-y-6">
             <div className="flex flex-col items-center space-y-4">
               <div className="relative">
                 <div className="w-24 h-24 rounded-full bg-[var(--bg-hover)] border-4 border-[var(--border-primary)] flex items-center justify-center overflow-hidden">
@@ -289,7 +289,7 @@ export default function ConfiguracoesPage() {
           </div>
         </div>
 
-        <div className="lg:col-span-2 bg-[var(--bg-secondary)] border border-[var(--border-primary)] rounded-lg p-6 shadow-sm">
+        <div className="lg:col-span-2 bg-[var(--bg-secondary)] border border-slate-500/30 rounded-lg p-6 shadow-sm">
           {activeTab === 'perfil' && (
             <div className="space-y-6">
               <div>

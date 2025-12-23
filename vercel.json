@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": ".next",
+  "crons": [
+    {
+      "path": "/api/cron/ranking",
+      "schedule": "0 0 * * *"
+    }
+  ]
+}

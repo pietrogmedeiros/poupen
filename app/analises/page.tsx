@@ -32,7 +32,7 @@ export default function AnalyticsPage() {
   return (
     <div className="space-y-8">
       <div className="space-y-2">
-        <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
+        <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-violet-400 to-purple-500 bg-clip-text text-transparent">
           Análise Inteligente
         </h1>
         <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">

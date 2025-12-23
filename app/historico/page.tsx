@@ -147,7 +147,7 @@ export default function HistoricoPage() {
     <div className="space-y-8">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <div>
-          <h1 className="text-3xl md:text-4xl font-bold text-[var(--text-primary)]">
+          <h1 className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-indigo-400 to-purple-500 bg-clip-text text-transparent">
             Histórico
           </h1>
           <p className="text-[var(--text-secondary)] mt-1 text-sm md:text-base">

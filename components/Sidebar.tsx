@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { 
   LayoutDashboard, 
+  Trophy,
   TrendingUp, 
   TrendingDown, 
   History,
@@ -18,6 +19,7 @@ import { useNotifications } from '@/lib/useNotifications';
 import { NotificationCenter } from './NotificationCenter';
 
 const menuItems = [
+  { icon: Trophy, href: '/ranking', label: 'Ranking' },
   { icon: LayoutDashboard, href: '/', label: 'Dashboard' },
   { icon: TrendingUp, href: '/entradas', label: 'Entradas' },
   { icon: TrendingDown, href: '/despesas', label: 'Despesas' },
