@@ -3,7 +3,6 @@ import { TopThreePodium } from '@/components/ranking/TopThreePodium';
 import { YourRankCard } from '@/components/ranking/YourRankCard';
 import { RankProgressCard } from '@/components/ranking/RankProgressCard';
 import { HeadToHeadCard } from '@/components/ranking/HeadToHeadCard';
-import { RankPredictor } from '@/components/ranking/RankPredictor';
 import { RankingLeaderboard } from '@/components/ranking/RankingLeaderboard';
 import { getCurrentMonth } from '@/lib/ranking';
 import { fetchRankings, fetchUserRanking } from '@/lib/ranking-queries';
@@ -83,18 +82,6 @@ export default async function RankingPage() {
                   allRankings={rankings}
                 />
               </div>
-
-              {/* Rank Predictor */}
-              <div className="mb-12">
-                <RankPredictor
-                  userRanking={userRankingData}
-                  allRankings={rankings}
-                  currentEconomyData={{
-                    entradas_total: userRankingData.entradas_total,
-                    despesas_total: userRankingData.despesas_total,
-                  }}
-                />
-              </div>
             </>
           ) : user?.id ? (
             // Usuário autenticado mas sem dados de ranking
@@ -123,22 +110,11 @@ export default async function RankingPage() {
                   />
                 </div>
                 <div>
-                  <RankPredictor
+                  <HeadToHeadCard
                     userRanking={rankings[0]}
                     allRankings={rankings}
-                    currentEconomyData={{
-                      entradas_total: rankings[0].entradas_total,
-                      despesas_total: rankings[0].despesas_total,
-                    }}
                   />
                 </div>
-              </div>
-
-              <div className="mt-6">
-                <HeadToHeadCard
-                  userRanking={rankings[0]}
-                  allRankings={rankings}
-                />
               </div>
             </div>
           ) : null}
