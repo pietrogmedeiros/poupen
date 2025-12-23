@@ -41,13 +41,13 @@ export default async function RankingPage() {
     }
 
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 px-4 py-8">
+      <div className="min-h-screen px-4 py-8" style={{background: 'var(--bg-primary)'}}>
         {/* Container Principal */}
         <div className="mx-auto max-w-7xl">
           {/* Header Section */}
           <div className="mb-12">
-            <h1 className="text-5xl font-bold text-white mb-3">Ranking</h1>
-            <p className="text-slate-400 text-lg">Acompanhe sua posição e taxa de economia mensal</p>
+            <h1 className="text-5xl font-bold mb-3" style={{color: 'var(--text-primary)'}}>Ranking</h1>
+            <p className="text-lg" style={{color: 'var(--text-secondary)'}}>Acompanhe sua posição e taxa de economia mensal</p>
           </div>
 
           {/* Top 3 Podium */}
@@ -114,20 +114,20 @@ export default async function RankingPage() {
 
           {/* Stats Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
-            <div className="rounded-lg border border-slate-700 bg-slate-900/50 p-6">
-              <p className="text-sm font-medium text-slate-400 mb-2">Total de Usuários</p>
-              <p className="text-3xl font-bold text-white">{rankings.length}</p>
+            <div className="rounded-lg border p-6" style={{borderColor: 'var(--border-primary)', background: 'var(--bg-secondary)'}}>
+              <p className="text-sm font-medium mb-2" style={{color: 'var(--text-secondary)'}}>Total de Usuários</p>
+              <p className="text-3xl font-bold" style={{color: 'var(--text-primary)'}}>{rankings.length}</p>
             </div>
 
-            <div className="rounded-lg border border-slate-700 bg-slate-900/50 p-6">
-              <p className="text-sm font-medium text-slate-400 mb-2">Sua Posição</p>
-              <p className="text-3xl font-bold text-white">
+            <div className="rounded-lg border p-6" style={{borderColor: 'var(--border-primary)', background: 'var(--bg-secondary)'}}>
+              <p className="text-sm font-medium mb-2" style={{color: 'var(--text-secondary)'}}>Sua Posição</p>
+              <p className="text-3xl font-bold" style={{color: 'var(--text-primary)'}}>
                 {userRankingData?.posicao ? `#${userRankingData.posicao}` : '—'}
               </p>
             </div>
 
-            <div className="rounded-lg border border-slate-700 bg-slate-900/50 p-6">
-              <p className="text-sm font-medium text-slate-400 mb-2">Melhor Taxa</p>
+            <div className="rounded-lg border p-6" style={{borderColor: 'var(--border-primary)', background: 'var(--bg-secondary)'}}>
+              <p className="text-sm font-medium mb-2" style={{color: 'var(--text-secondary)'}}>Melhor Taxa</p>
               <p className="text-3xl font-bold text-orange-500">
                 {rankings.length > 0 ? `${Math.max(...rankings.map(r => r.economia_taxa)).toFixed(1)}%` : '—'}
               </p>
@@ -149,10 +149,10 @@ export default async function RankingPage() {
   } catch (error) {
     console.error('Erro na página de ranking:', error);
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4" style={{background: 'var(--bg-primary)'}}>
         <div className="rounded-lg border border-red-500/30 bg-red-500/10 p-6 max-w-md text-center">
           <p className="text-red-400 font-semibold mb-2">❌ Erro ao Carregar Ranking</p>
-          <p className="text-slate-400 text-sm">
+          <p className="text-sm" style={{color: 'var(--text-secondary)'}}>
             Houve um problema ao buscar os dados do ranking. Tente novamente mais tarde.
           </p>
         </div>

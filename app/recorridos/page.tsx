@@ -356,7 +356,8 @@ export default function RecorridosPage() {
             {recorrencias.map((recorrencia) => (
               <div
                 key={recorrencia.id}
-                className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700/50 rounded-xl hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors"
+                className="flex items-center justify-between p-4 rounded-xl transition-colors border"
+                style={{background: 'var(--bg-secondary)', borderColor: 'var(--border-primary)'}}
               >
                 <div className="flex items-center gap-4 flex-1">
                   <div className={`w-10 h-10 rounded-lg flex items-center justify-center ${
