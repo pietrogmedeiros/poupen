@@ -12,11 +12,14 @@ import {
   Camera,
   Settings,
   LogOut,
-  Repeat2
+  Repeat2,
+  Sun,
+  Moon
 } from 'lucide-react';
 import { useAuth } from '@/lib/auth-context';
 import { useNotifications } from '@/lib/useNotifications';
 import { NotificationCenter } from './NotificationCenter';
+import { useTheme } from 'next-themes';
 
 const menuItems = [
   { icon: Trophy, href: '/ranking', label: 'Ranking' },
@@ -72,6 +75,7 @@ export function Sidebar() {
   const router = useRouter();
   const { signOut, user } = useAuth();
   const { unreadCount } = useNotifications(user?.id);
+  const { theme, setTheme } = useTheme();
 
   const handleLogout = useCallback(async () => {
     try {
@@ -81,6 +85,10 @@ export function Sidebar() {
       console.error('Erro ao fazer logout:', error);
     }
   }, [signOut, router]);
+
+  const toggleTheme = useCallback(() => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  }, [theme, setTheme]);
 
   // Esconder sidebar em páginas de auth
   if (pathname === '/login' || pathname === '/signup') {
@@ -108,6 +116,21 @@ export function Sidebar() {
 
       {/* Bottom Icons */}
       <div className="flex flex-col space-y-3 mt-auto pt-6 border-t border-[var(--border-secondary)] will-change-auto">
+        <button
+          onClick={toggleTheme}
+          className="relative group flex items-center justify-center w-11 h-11 rounded-lg transition-all duration-200 text-[var(--text-secondary)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-secondary)]"
+          title={theme === 'dark' ? 'Tema claro' : 'Tema escuro'}
+        >
+          {theme === 'dark' ? (
+            <Sun className="w-5 h-5" />
+          ) : (
+            <Moon className="w-5 h-5" />
+          )}
+          <span className="absolute left-full ml-4 px-3 py-2 bg-[var(--bg-primary)] backdrop-blur-sm text-[var(--text-primary)] text-xs font-medium rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none border border-[var(--border-secondary)] shadow-lg">
+            {theme === 'dark' ? 'Tema claro' : 'Tema escuro'}
+          </span>
+        </button>
+
         <Link
           href="/configuracoes"
           className={`relative group flex items-center justify-center w-11 h-11 rounded-lg transition-all duration-200 ${

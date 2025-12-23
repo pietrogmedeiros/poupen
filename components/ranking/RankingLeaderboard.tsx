@@ -5,6 +5,7 @@ import { useRanking } from '@/lib/hooks/useRanking';
 import { RankingListItem } from './RankingListItem';
 import { RankingWithUser } from '@/lib/types/ranking';
 import { Skeleton } from '@/components/ui/skeleton';
+import { themeClasses } from '@/lib/theme-classes';
 
 interface RankingLeaderboardProps {
   month?: string;
@@ -51,26 +52,26 @@ export function RankingLeaderboard({
   return (
     <div className={`flex flex-col gap-4 ${className}`}>
       {/* Header */}
-      <div className="sticky top-0 z-10 rounded-lg border border-slate-700/50 bg-gradient-to-r from-slate-900/50 to-slate-800/50 backdrop-blur-sm px-4 py-3">
+      <div className={`sticky top-0 z-10 rounded-lg ${themeClasses.border.primary} dark:bg-gradient-to-r dark:from-slate-900/50 dark:to-slate-800/50 light:bg-white light:shadow-sm backdrop-blur-sm px-4 py-3`}>
         <h2 className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
           Poupen Ranking
         </h2>
-        <p className="text-xs text-slate-400 mt-1">
+        <p className={`text-xs ${themeClasses.text.secondary} mt-1`}>
           Compete com outros poupadores e ganhe badges exclusivos!
         </p>
       </div>
 
       {/* Error Message */}
       {error && (
-        <div className="rounded-lg border border-red-500/30 bg-red-500/10 px-4 py-3 text-sm text-red-400">
+        <div className="rounded-lg border border-red-500/30 dark:bg-red-500/10 light:bg-red-50 px-4 py-3 text-sm text-red-400">
           Erro: {error}
         </div>
       )}
 
       {/* User Ranking Card (if available) */}
       {showUserRanking && userRanking && (
-        <div className="rounded-lg border-2 border-emerald-500/30 bg-gradient-to-r from-emerald-500/10 to-cyan-500/10 p-4">
-          <p className="text-xs text-emerald-400 font-semibold mb-3 uppercase tracking-wider">
+        <div className={`rounded-lg border-2 border-emerald-500/30 dark:bg-gradient-to-r dark:from-emerald-500/10 dark:to-cyan-500/10 light:bg-white light:shadow-sm p-4`}>
+          <p className={`text-xs text-emerald-400 font-semibold mb-3 uppercase tracking-wider`}>
             Sua Posição no Ranking
           </p>
           <RankingListItem
@@ -84,7 +85,7 @@ export function RankingLeaderboard({
       {/* Leaderboard Container */}
       <div
         ref={containerRef}
-        className="flex flex-col gap-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar"
+        className={`flex flex-col gap-3 max-h-[600px] overflow-y-auto pr-2 custom-scrollbar`}
       >
         {loading && rankings.length === 0 ? (
           // Loading Skeleton
@@ -92,7 +93,7 @@ export function RankingLeaderboard({
             {Array.from({ length: 5 }).map((_, i) => (
               <Skeleton
                 key={i}
-                className="h-20 rounded-lg bg-slate-800/50"
+                className="h-20 rounded-lg dark:bg-slate-800/50 light:bg-gray-200"
               />
             ))}
           </>
@@ -100,8 +101,8 @@ export function RankingLeaderboard({
           // Empty State
           <div className="flex flex-col items-center justify-center gap-2 py-12 text-center">
             <p className="text-3xl">🏆</p>
-            <p className="text-slate-400">Nenhum ranking disponível</p>
-            <p className="text-xs text-slate-500">
+            <p className={`${themeClasses.text.secondary}`}>Nenhum ranking disponível</p>
+            <p className={`text-xs dark:text-slate-500 light:text-gray-500`}>
               Os rankings estarão disponíveis após o próximo cálculo
             </p>
           </div>
@@ -131,7 +132,7 @@ export function RankingLeaderboard({
 
       {/* Footer Info */}
       {rankings.length > 0 && (
-        <div className="text-center text-xs text-slate-500">
+        <div className={`text-center text-xs dark:text-slate-500 light:text-gray-500`}>
           Exibindo {rankings.length} de {rankings.length + (hasMore ? '+' : '')}{' '}
           rankings
         </div>

@@ -6,6 +6,7 @@ import { RankingWithUser } from '@/lib/types/ranking';
 import { formatEconomia } from '@/lib/ranking';
 import { BadgeGroup } from './BadgeDisplay';
 import { Avatar } from '@/components/ui/avatar';
+import { themeClasses } from '@/lib/theme-classes';
 
 interface RankingListItemProps {
   ranking: RankingWithUser;
@@ -60,18 +61,18 @@ export function RankingListItem({
     <Link href={`/ranking/${ranking.users.username}`}>
       <div
         onClick={() => onClick?.(ranking)}
-        className={`group relative w-full rounded-lg border bg-gradient-to-r ${getRankMedalColor(ranking.posicao)} backdrop-blur-sm transition-all duration-300 cursor-pointer
-          ${animated ? 'hover:shadow-lg hover:scale-102' : ''}
-          ${isUserRanking ? 'ring-2 ring-emerald-500/50 ring-offset-1 ring-offset-slate-950' : ''}
+        className={`group relative w-full rounded-lg border dark:bg-gradient-to-r light:bg-white ${getRankMedalColor(ranking.posicao)} backdrop-blur-sm transition-all duration-300 cursor-pointer
+          ${animated ? 'dark:hover:shadow-lg light:hover:shadow-md hover:scale-102' : ''}
+          ${isUserRanking ? 'ring-2 ring-emerald-500/50 dark:ring-offset-slate-950 light:ring-offset-white ring-offset-1' : ''}
           ${isTop3 ? 'border-2' : 'border'}`}
       >
         <div className="flex items-center gap-4 p-4">
           {/* Position / Medal */}
-          <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900/50 text-xl font-bold">
+          <div className={`flex h-12 w-12 items-center justify-center rounded-full dark:bg-slate-900/50 light:bg-gray-100 dark:text-white light:text-gray-900 text-xl font-bold`}>
             {medal ? (
               <span className="text-2xl">{medal}</span>
             ) : (
-              <span className="text-slate-400">#{ranking.posicao}</span>
+              <span className={`${themeClasses.text.secondary}`}>#{ranking.posicao}</span>
             )}
           </div>
 
@@ -84,10 +85,10 @@ export function RankingListItem({
             />
 
             <div className="min-w-0 flex-1">
-              <p className="font-semibold text-white truncate">
+              <p className={`font-semibold ${themeClasses.text.primary} truncate`}>
                 {userName}
               </p>
-              <p className="text-xs text-slate-400 truncate">
+              <p className={`text-xs ${themeClasses.text.secondary} truncate`}>
                 @{ranking.users.username || 'user'}
               </p>
             </div>
@@ -96,7 +97,7 @@ export function RankingListItem({
           {/* Economia Taxa */}
           <div className="flex flex-col items-end gap-1">
             <div className="text-right">
-              <p className="text-sm text-slate-400">Taxa</p>
+              <p className={`text-sm ${themeClasses.text.secondary}`}>Taxa</p>
               <p className="text-lg font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">
                 {formatEconomia(ranking.economia_taxa)}
               </p>
@@ -106,7 +107,7 @@ export function RankingListItem({
 
         {/* Badges */}
         {ranking.badges && ranking.badges.length > 0 && (
-          <div className="border-t border-slate-700/30 px-4 py-3">
+          <div className={`border-t dark:border-slate-700/30 light:border-gray-300 px-4 py-3`}>
             <BadgeGroup
               badges={ranking.badges as any}
               size="sm"
